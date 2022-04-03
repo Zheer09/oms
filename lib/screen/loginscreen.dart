@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_const
 
 import 'package:flutter/material.dart';
+import 'package:oms/screen/dashboardScreen.dart';
 
 // ignore: camel_case_types
 class loginscreen extends StatefulWidget {
@@ -56,7 +57,13 @@ class _loginscreenState extends State<loginscreen> {
                 child: TextFormField(
                   //inputFormatters: [FilteringTextInputFormatter.deny()],
                   keyboardType: TextInputType.name,
+
                   decoration: const InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Color(0xFFC2A26A), width: 3.0),
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(10.0))),
                       border: OutlineInputBorder(
                           borderSide: BorderSide(width: 3, color: Colors.black),
                           borderRadius:
@@ -80,6 +87,11 @@ class _loginscreenState extends State<loginscreen> {
                   keyboardType: TextInputType.text,
                   obscureText: true,
                   decoration: const InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Color(0xFFC2A26A), width: 3.0),
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(10.0))),
                       border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(10.0))),
@@ -147,9 +159,12 @@ class _loginscreenState extends State<loginscreen> {
                       borderRadius: BorderRadius.circular(30)),
                   primary: const Color(0xFFC2A26A),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const dashboard()));
+                },
                 child: const Text("Login into your acount")),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             ElevatedButton(

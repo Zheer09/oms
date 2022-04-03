@@ -62,6 +62,10 @@ flutter:
   uses-material-design: true
   assets:
     - assets/krg-logo-300.png
+    - assets/Rectangle 6.png
+    - assets/complaint.png
+    - assets/Archive.png
+    - assets/Status.png
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
