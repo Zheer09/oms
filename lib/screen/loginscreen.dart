@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:oms/screen/dashboardScreen.dart';
+import 'package:oms/screen/registerScreen.dart';
 
 // ignore: camel_case_types
 class loginscreen extends StatefulWidget {
@@ -175,7 +176,10 @@ class _loginscreenState extends State<loginscreen> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30)),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const register()));
+                },
                 child: const Text("Register an account")),
             Container(
               color: Colors.amber,

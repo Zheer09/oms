@@ -6,6 +6,12 @@
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
 	<string>Oms</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photo Library Usage Description</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Camera Library Usage Description</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Microphone Library Usage Description</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>

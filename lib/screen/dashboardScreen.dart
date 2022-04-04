@@ -56,9 +56,9 @@ class _dashboardState extends State<dashboard> {
             Container(
               height: 200,
               decoration: const BoxDecoration(
-                  color: Colors.amber,
+                  color: Color(0xFFC2A26A),
                   image: DecorationImage(
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fill,
                     image: AssetImage("assets/Rectangle 6.png"),
                   ),
                   borderRadius: BorderRadius.all(Radius.circular(17))),
