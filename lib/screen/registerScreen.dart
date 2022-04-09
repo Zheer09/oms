@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:get/get.dart';
 
 import '../model/Textheme.dart';
 
@@ -203,7 +204,40 @@ class _registerState extends State<register> {
                           width: MediaQuery.of(context).size.width * 0.38,
                           height: 100,
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Get.bottomSheet(
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(16.0),
+                                        topRight: Radius.circular(16.0)),
+                                  ),
+                                  child: Wrap(
+                                    alignment: WrapAlignment.end,
+                                    crossAxisAlignment: WrapCrossAlignment.end,
+                                    children: [
+                                      ListTile(
+                                        leading: const Icon(Icons.camera),
+                                        title: const Text('Camera'),
+                                        onTap: () {
+                                          Get.back();
+                                          pickCamera;
+                                        },
+                                      ),
+                                      ListTile(
+                                        leading: Icon(Icons.image),
+                                        title: Text('Gallery'),
+                                        onTap: () {
+                                          Get.back();
+                                          pickImage;
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
                             child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: const [

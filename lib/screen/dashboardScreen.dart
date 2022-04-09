@@ -66,9 +66,18 @@ class _dashboardState extends State<dashboard> {
             const SizedBox(
               height: 30,
             ),
-            const dashboardCard(),
-            const dashboardCard(),
-            const dashboardCard(),
+            dashboardCard(
+              title: "Complaint",
+              image: "assets/complaint.png",
+            ),
+            dashboardCard(
+              title: "Status",
+              image: "assets/Status.png",
+            ),
+            dashboardCard(
+              title: "archive",
+              image: "assets/Archive.png",
+            ),
           ]),
         ),
       )),

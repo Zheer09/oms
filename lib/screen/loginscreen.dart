@@ -1,8 +1,11 @@
 // ignore_for_file: unnecessary_const
 
 import 'package:flutter/material.dart';
+import 'package:oms/model/account.dart';
 import 'package:oms/screen/dashboardScreen.dart';
 import 'package:oms/screen/registerScreen.dart';
+
+import '../service/userAcc_service.dart';
 
 // ignore: camel_case_types
 class loginscreen extends StatefulWidget {
@@ -15,6 +18,9 @@ class loginscreen extends StatefulWidget {
 // ignore: camel_case_types
 class _loginscreenState extends State<loginscreen> {
   bool? checkedValue = false;
+
+  String? email;
+  String? password;
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +81,9 @@ class _loginscreenState extends State<loginscreen> {
                         Icons.email,
                         color: Color(0xFFC2A26A),
                       )),
+                  onChanged: (value) {
+                    email = value;
+                  },
                 ),
               ),
             ),
@@ -102,6 +111,9 @@ class _loginscreenState extends State<loginscreen> {
                         Icons.lock,
                         color: Color(0xFFC2A26A),
                       )),
+                  onChanged: (value) {
+                    password = value;
+                  },
                 ),
               ),
             ),
@@ -161,8 +173,7 @@ class _loginscreenState extends State<loginscreen> {
                   primary: const Color(0xFFC2A26A),
                 ),
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const dashboard()));
+                  login(context);
                 },
                 child: const Text("Login into your acount")),
             const SizedBox(
@@ -189,5 +200,17 @@ class _loginscreenState extends State<loginscreen> {
         ),
       ),
     ));
+  }
+
+  void login(context) async {
+    final account? user =
+        await UserService.getUser(email: email, password: password);
+
+    if (user == null) {
+      print("nooo");
+    } else {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => const dashboard()));
+    }
   }
 }
