@@ -1,74 +1,24 @@
-// ignore: file_names
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
 
 import '../model/Textheme.dart';
 
-// ignore: camel_case_types
-class register extends StatefulWidget {
-  const register({Key? key}) : super(key: key);
+class complaint extends StatefulWidget {
+  const complaint({Key? key}) : super(key: key);
 
-  static Route route() => MaterialPageRoute(builder: (context) => register());
+  static Route route() => MaterialPageRoute(builder: (context) => complaint());
 
   @override
-  State<register> createState() => _registerState();
+  State<complaint> createState() => _complaintState();
 }
 
-// ignore: camel_case_types
-class _registerState extends State<register> {
-  File? image;
-
-  Future pickImage() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.camera);
-
-      if (image == null) return;
-
-      final imageTemp = File(image.path);
-
-      setState(() {
-        this.image = imageTemp;
-      });
-    } on PlatformException catch (e) {
-      print("Faild to pick image: $e");
-    }
-  }
-
-  Future pickCamera() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.camera);
-
-      if (image == null) return;
-
-      final imageTemp = File(image.path);
-
-      setState(() {
-        this.image = imageTemp;
-      });
-    } on PlatformException catch (e) {
-      print("Faild to pick image: $e");
-    }
-  }
-
+class _complaintState extends State<complaint> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          leading: IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: Colors.black,
-            ),
-          )),
       body: SafeArea(
           child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
+        physics: BouncingScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Form(
@@ -222,18 +172,12 @@ class _registerState extends State<register> {
                                       ListTile(
                                         leading: const Icon(Icons.camera),
                                         title: const Text('Camera'),
-                                        onTap: () {
-                                          Get.back();
-                                          pickCamera;
-                                        },
+                                        onTap: () {},
                                       ),
                                       ListTile(
                                         leading: Icon(Icons.image),
                                         title: Text('Gallery'),
-                                        onTap: () {
-                                          Get.back();
-                                          pickImage;
-                                        },
+                                        onTap: () {},
                                       ),
                                     ],
                                   ),

@@ -11,6 +11,9 @@ import '../service/userAcc_service.dart';
 class loginscreen extends StatefulWidget {
   const loginscreen({Key? key}) : super(key: key);
 
+  static Route route() =>
+      MaterialPageRoute(builder: (context) => loginscreen());
+
   @override
   State<loginscreen> createState() => _loginscreenState();
 }
@@ -18,10 +21,21 @@ class loginscreen extends StatefulWidget {
 // ignore: camel_case_types
 class _loginscreenState extends State<loginscreen> {
   bool? checkedValue = false;
-
+  late final account? user;
   String? email;
   String? password;
+  final _text = TextEditingController();
+  final _textpass = TextEditingController();
 
+  @override
+  void dispose() {
+    _text.dispose();
+    _textpass.dispose();
+    super.dispose();
+  }
+
+  bool _validate = false;
+  bool _validatepass = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,20 +78,26 @@ class _loginscreenState extends State<loginscreen> {
                 child: TextFormField(
                   //inputFormatters: [FilteringTextInputFormatter.deny()],
                   keyboardType: TextInputType.name,
-
-                  decoration: const InputDecoration(
-                      focusedBorder: OutlineInputBorder(
+                  controller: _text,
+                  decoration: InputDecoration(
+                      errorText: _validate ? 'Value Can\'t Be Empty' : null,
+                      focusedBorder: const OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Color(0xFFC2A26A), width: 3.0),
                           borderRadius:
                               BorderRadius.all(Radius.circular(10.0))),
-                      border: OutlineInputBorder(
+                      errorBorder: const OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.redAccent, width: 2.0),
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(15.0))),
+                      border: const OutlineInputBorder(
                           borderSide: BorderSide(width: 3, color: Colors.black),
                           borderRadius:
-                              BorderRadius.all(Radius.circular(10.0))),
+                              BorderRadius.all(Radius.circular(15.0))),
                       hintText: 'Enter Your Email',
-                      contentPadding: EdgeInsets.symmetric(vertical: 10),
-                      prefixIcon: Icon(
+                      contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                      prefixIcon: const Icon(
                         Icons.email,
                         color: Color(0xFFC2A26A),
                       )),
@@ -94,20 +114,22 @@ class _loginscreenState extends State<loginscreen> {
               width: MediaQuery.of(context).size.width * 0.80,
               child: Form(
                 child: TextFormField(
+                  controller: _textpass,
                   keyboardType: TextInputType.text,
                   obscureText: true,
-                  decoration: const InputDecoration(
-                      focusedBorder: OutlineInputBorder(
+                  decoration: InputDecoration(
+                      errorText: _validatepass ? 'Value Can\'t Be Empty' : null,
+                      focusedBorder: const OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Color(0xFFC2A26A), width: 3.0),
                           borderRadius:
                               BorderRadius.all(Radius.circular(10.0))),
-                      border: OutlineInputBorder(
+                      border: const OutlineInputBorder(
                           borderRadius:
-                              BorderRadius.all(Radius.circular(10.0))),
+                              BorderRadius.all(Radius.circular(15.0))),
                       hintText: 'Enter Your Password',
-                      contentPadding: EdgeInsets.symmetric(vertical: 10),
-                      prefixIcon: Icon(
+                      contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                      prefixIcon: const Icon(
                         Icons.lock,
                         color: Color(0xFFC2A26A),
                       )),
@@ -173,6 +195,18 @@ class _loginscreenState extends State<loginscreen> {
                   primary: const Color(0xFFC2A26A),
                 ),
                 onPressed: () {
+                  setState(() {
+                    if (_text.text.isEmpty) {
+                      _validate = true;
+                    } else if (_text.text.isNotEmpty) {
+                      _validate = false;
+                    }
+                    if (_textpass.text.isEmpty) {
+                      _validatepass = true;
+                    } else if (_textpass.text.isNotEmpty) {
+                      _validatepass = false;
+                    } else {}
+                  });
                   login(context);
                 },
                 child: const Text("Login into your acount")),
@@ -203,14 +237,13 @@ class _loginscreenState extends State<loginscreen> {
   }
 
   void login(context) async {
-    final account? user =
-        await UserService.getUser(email: email, password: password);
+    user = await UserService.getUser(email: email, password: password);
 
     if (user == null) {
-      print("nooo");
-    } else {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => const dashboard()));
+    } else if (user?.accountType == "citizen") {
+      await Navigator.of(context).pushNamed('/mainCT', arguments: user);
+    } else if (user?.accountType == "maintainer") {
+      await Navigator.of(context).pushNamed('/mainCT');
     }
   }
 }

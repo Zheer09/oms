@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:oms/model/account.dart';
+import 'package:oms/screen/complaintScreen.dart';
 
 import '../model/dashboard_card.dart';
 
 class dashboard extends StatefulWidget {
-  const dashboard({Key? key}) : super(key: key);
+  dashboard({Key? key, this.user}) : super(key: key);
+
+  static Route route() => MaterialPageRoute(builder: (context) => dashboard());
+
+  account? user;
 
   @override
   State<dashboard> createState() => _dashboardState();
@@ -38,16 +44,17 @@ class _dashboardState extends State<dashboard> {
           child: Column(children: [
             const SizedBox(height: 25),
             Row(
-              children: const [
+              children: [
                 CircleAvatar(
                   radius: 25,
                   backgroundImage: NetworkImage("https://i.pravatar.cc/300"),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 12),
+                  padding: const EdgeInsets.only(left: 12),
                   child: Text(
-                    "Ahmed Kamaran",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    "${widget.user?.firstname} ${widget.user?.lastname}",
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 )
               ],

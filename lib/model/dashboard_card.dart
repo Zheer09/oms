@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:oms/screen/complaintScreen.dart';
 
 class dashboardCard extends StatefulWidget {
   dashboardCard({Key? key, this.title, this.subTitle, this.image})
@@ -22,7 +23,10 @@ class _dashboardCardState extends State<dashboardCard> {
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(12))),
         child: InkWell(
-            onTap: () {},
+            onTap: () {
+              // Navigator.of(context).push(MaterialPageRoute(
+              //     builder: (context) => widget.callback()));
+            },
             child: SizedBox(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.width * 0.18,
@@ -46,7 +50,7 @@ class _dashboardCardState extends State<dashboardCard> {
                           const SizedBox(
                             height: 5,
                           ),
-                          Text("Complaint to public services")
+                          Text("${widget.subTitle}")
                         ],
                       ),
                     )
