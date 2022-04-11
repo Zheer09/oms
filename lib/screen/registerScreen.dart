@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:get/get.dart';
 
 import '../model/Textheme.dart';
 
@@ -12,7 +11,8 @@ import '../model/Textheme.dart';
 class register extends StatefulWidget {
   const register({Key? key}) : super(key: key);
 
-  static Route route() => MaterialPageRoute(builder: (context) => register());
+  static Route route() =>
+      MaterialPageRoute(builder: (context) => const register());
 
   @override
   State<register> createState() => _registerState();
@@ -20,36 +20,61 @@ class register extends StatefulWidget {
 
 // ignore: camel_case_types
 class _registerState extends State<register> {
-  File? image;
+  XFile? imageFront;
+  XFile? imageBack;
 
-  Future pickImage() async {
+  Future pickImageFront() async {
     try {
-      final image = await ImagePicker().pickImage(source: ImageSource.camera);
-
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
-
       final imageTemp = File(image.path);
-
       setState(() {
-        this.image = imageTemp;
+        imageFront = imageTemp as XFile?;
       });
     } on PlatformException catch (e) {
+      // ignore: avoid_print
       print("Faild to pick image: $e");
     }
   }
 
-  Future pickCamera() async {
+  Future pickCameraFront() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.camera);
-
       if (image == null) return;
-
-      final imageTemp = File(image.path);
-
+      final imageTemp = XFile(image.path);
       setState(() {
-        this.image = imageTemp;
+        imageFront = imageTemp;
       });
     } on PlatformException catch (e) {
+      // ignore: avoid_print
+      print("Faild to pick image: $e");
+    }
+  }
+
+  Future pickImageBack() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+      final imageTemp = File(image.path);
+      setState(() {
+        imageBack = imageTemp as XFile?;
+      });
+    } on PlatformException catch (e) {
+      // ignore: avoid_print
+      print("Faild to pick image: $e");
+    }
+  }
+
+  Future pickCameraBack() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.camera);
+      if (image == null) return;
+      final imageTemp = XFile(image.path);
+      setState(() {
+        imageBack = imageTemp;
+      });
+    } on PlatformException catch (e) {
+      // ignore: avoid_print
       print("Faild to pick image: $e");
     }
   }
@@ -156,14 +181,14 @@ class _registerState extends State<register> {
                           lableText: "Re-enter your Password",
                         ))),
                 const SizedBox(
-                  height: 20,
+                  height: 25,
                 ),
                 const Text(
                   "Upload Your ID",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 15,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -173,93 +198,331 @@ class _registerState extends State<register> {
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                       child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.38,
-                          height: 100,
-                          child: InkWell(
-                            onTap: () {},
-                            child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Text(
-                                    "Add Back side of the ID",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12),
+                        width: MediaQuery.of(context).size.width * 0.38,
+                        height: 100,
+                        child: imageBack == null
+                            ? InkWell(
+                                onTap: () {
+                                  showModalBottomSheet(
+                                      context: context,
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(10),
+                                        ),
+                                      ),
+                                      builder: (context) => SizedBox(
+                                            height: 110,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 15),
+                                              child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    InkWell(
+                                                      onTap: () {
+                                                        pickCameraBack();
+                                                      },
+                                                      child:
+                                                          Row(children: const [
+                                                        Icon(
+                                                          Icons
+                                                              .camera_alt_rounded,
+                                                          color: Colors.grey,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 30,
+                                                        ),
+                                                        Text("Camera")
+                                                      ]),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    InkWell(
+                                                      onTap: () {
+                                                        Navigator.pop(context);
+                                                        pickImageBack();
+                                                      },
+                                                      child:
+                                                          Row(children: const [
+                                                        Icon(
+                                                          Icons
+                                                              .photo_album_rounded,
+                                                          color: Colors.grey,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 30,
+                                                        ),
+                                                        Text("Gallery")
+                                                      ]),
+                                                    )
+                                                  ]),
+                                            ),
+                                          ));
+                                },
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      Text(
+                                        "Add Back side of the ID",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12),
+                                      ),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      Icon(
+                                        Icons.add_circle_rounded,
+                                        size: 30,
+                                        color: Colors.black26,
+                                      ),
+                                    ]),
+                              )
+                            : InkWell(
+                                onTap: () {
+                                  showModalBottomSheet(
+                                      context: context,
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(10),
+                                        ),
+                                      ),
+                                      builder: (context) => SizedBox(
+                                            height: 110,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 15),
+                                              child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    InkWell(
+                                                      onTap: () {
+                                                        Navigator.pop(context);
+                                                        pickCameraFront();
+                                                      },
+                                                      child:
+                                                          Row(children: const [
+                                                        Icon(
+                                                          Icons
+                                                              .camera_alt_rounded,
+                                                          color: Colors.grey,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 30,
+                                                        ),
+                                                        Text("Camera")
+                                                      ]),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    InkWell(
+                                                      onTap: () {
+                                                        Navigator.pop(context);
+                                                        pickImageFront();
+                                                      },
+                                                      child:
+                                                          Row(children: const [
+                                                        Icon(
+                                                          Icons
+                                                              .photo_album_rounded,
+                                                          color: Colors.grey,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 30,
+                                                        ),
+                                                        Text("Gallery")
+                                                      ]),
+                                                    )
+                                                  ]),
+                                            ),
+                                          ));
+                                },
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  child: Image.file(
+                                    File(imageBack!.path),
+                                    fit: BoxFit.cover,
                                   ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  Icon(
-                                    Icons.add_circle_rounded,
-                                    size: 30,
-                                    color: Colors.black26,
-                                  ),
-                                ]),
-                          )),
+                                ),
+                              ),
+                      ),
                     ),
                     Card(
                       color: Colors.black12,
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                       child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.38,
-                          height: 100,
-                          child: InkWell(
-                            onTap: () {
-                              Get.bottomSheet(
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(16.0),
-                                        topRight: Radius.circular(16.0)),
-                                  ),
-                                  child: Wrap(
-                                    alignment: WrapAlignment.end,
-                                    crossAxisAlignment: WrapCrossAlignment.end,
-                                    children: [
-                                      ListTile(
-                                        leading: const Icon(Icons.camera),
-                                        title: const Text('Camera'),
-                                        onTap: () {
-                                          Get.back();
-                                          pickCamera;
-                                        },
+                        width: MediaQuery.of(context).size.width * 0.38,
+                        height: 100,
+                        child: imageFront == null
+                            ? InkWell(
+                                onTap: () {
+                                  showModalBottomSheet(
+                                      context: context,
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(10),
+                                        ),
                                       ),
-                                      ListTile(
-                                        leading: Icon(Icons.image),
-                                        title: Text('Gallery'),
-                                        onTap: () {
-                                          Get.back();
-                                          pickImage;
-                                        },
+                                      builder: (context) => SizedBox(
+                                            height: 110,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 15),
+                                              child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    InkWell(
+                                                      onTap: () {
+                                                        Navigator.pop(context);
+                                                        pickCameraFront();
+                                                      },
+                                                      child:
+                                                          Row(children: const [
+                                                        Icon(
+                                                          Icons
+                                                              .camera_alt_rounded,
+                                                          color: Colors.grey,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 30,
+                                                        ),
+                                                        Text("Camera")
+                                                      ]),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    InkWell(
+                                                      onTap: () {
+                                                        Navigator.pop(context);
+                                                        pickImageFront();
+                                                      },
+                                                      child:
+                                                          Row(children: const [
+                                                        Icon(
+                                                          Icons
+                                                              .photo_album_rounded,
+                                                          color: Colors.grey,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 30,
+                                                        ),
+                                                        Text("Gallery")
+                                                      ]),
+                                                    )
+                                                  ]),
+                                            ),
+                                          ));
+                                },
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      Text(
+                                        "Add Front side of the ID",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12),
                                       ),
-                                    ],
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      Icon(
+                                        Icons.add_circle_rounded,
+                                        size: 30,
+                                        color: Colors.white70,
+                                      ),
+                                    ]),
+                              )
+                            : InkWell(
+                                onTap: () {
+                                  showModalBottomSheet(
+                                      context: context,
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(10),
+                                        ),
+                                      ),
+                                      builder: (context) => SizedBox(
+                                            height: 110,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 15),
+                                              child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    InkWell(
+                                                      onTap: () {
+                                                        Navigator.pop(context);
+                                                        pickCameraFront();
+                                                      },
+                                                      child:
+                                                          Row(children: const [
+                                                        Icon(
+                                                          Icons
+                                                              .camera_alt_rounded,
+                                                          color: Colors.grey,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 30,
+                                                        ),
+                                                        Text("Camera")
+                                                      ]),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    InkWell(
+                                                      onTap: () {
+                                                        Navigator.pop(context);
+                                                        pickImageFront();
+                                                      },
+                                                      child:
+                                                          Row(children: const [
+                                                        Icon(
+                                                          Icons
+                                                              .photo_album_rounded,
+                                                          color: Colors.grey,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 30,
+                                                        ),
+                                                        Text("Gallery")
+                                                      ]),
+                                                    )
+                                                  ]),
+                                            ),
+                                          ));
+                                },
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  child: Image.file(
+                                    File(imageFront!.path),
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
-                              );
-                            },
-                            child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Text(
-                                    "Add Front side of the ID",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  Icon(
-                                    Icons.add_circle_rounded,
-                                    size: 30,
-                                    color: Colors.white70,
-                                  ),
-                                ]),
-                          )),
+                              ),
+                      ),
                     ),
                   ],
                 ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:oms/screen/complaintScreen.dart';
 
 class dashboardCard extends StatefulWidget {
   dashboardCard({Key? key, this.title, this.subTitle, this.image})
@@ -44,7 +43,7 @@ class _dashboardCardState extends State<dashboardCard> {
                         children: [
                           Text(
                             "${widget.title}",
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 20),
                           ),
                           const SizedBox(

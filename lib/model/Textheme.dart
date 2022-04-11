@@ -11,7 +11,7 @@ class ThemeHelper {
       labelText: lableText,
       hintText: hintText,
       fillColor: Colors.white,
-      contentPadding: EdgeInsets.symmetric(horizontal: 15),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 15),
       focusedBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: Color(0xFFC2A26A), width: 2.0),
           borderRadius: BorderRadius.all(Radius.circular(15.0))),

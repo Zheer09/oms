@@ -2,8 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:oms/model/account.dart';
+import 'package:oms/model/accountProvider.dart';
 import 'package:oms/screen/dashboardScreen.dart';
 import 'package:oms/screen/registerScreen.dart';
+import 'package:provider/provider.dart';
 
 import '../service/userAcc_service.dart';
 
@@ -38,6 +40,7 @@ class _loginscreenState extends State<loginscreen> {
   bool _validatepass = false;
   @override
   Widget build(BuildContext context) {
+    var User = Provider.of<accountPro>(context);
     return Scaffold(
         body: SafeArea(
       child: SingleChildScrollView(
@@ -85,7 +88,7 @@ class _loginscreenState extends State<loginscreen> {
                           borderSide:
                               BorderSide(color: Color(0xFFC2A26A), width: 3.0),
                           borderRadius:
-                              BorderRadius.all(Radius.circular(10.0))),
+                              BorderRadius.all(Radius.circular(15.0))),
                       errorBorder: const OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Colors.redAccent, width: 2.0),
@@ -103,6 +106,13 @@ class _loginscreenState extends State<loginscreen> {
                       )),
                   onChanged: (value) {
                     email = value;
+                    setState(() {
+                      if (_text.text.isEmpty) {
+                        _validate = true;
+                      } else if (_text.text.isNotEmpty) {
+                        _validate = false;
+                      }
+                    });
                   },
                 ),
               ),
@@ -123,7 +133,7 @@ class _loginscreenState extends State<loginscreen> {
                           borderSide:
                               BorderSide(color: Color(0xFFC2A26A), width: 3.0),
                           borderRadius:
-                              BorderRadius.all(Radius.circular(10.0))),
+                              BorderRadius.all(Radius.circular(15.0))),
                       border: const OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(15.0))),
@@ -135,6 +145,13 @@ class _loginscreenState extends State<loginscreen> {
                       )),
                   onChanged: (value) {
                     password = value;
+                    setState(() {
+                      if (_textpass.text.isEmpty) {
+                        _validatepass = true;
+                      } else if (_textpass.text.isNotEmpty) {
+                        _validatepass = false;
+                      } else {}
+                    });
                   },
                 ),
               ),
@@ -195,19 +212,7 @@ class _loginscreenState extends State<loginscreen> {
                   primary: const Color(0xFFC2A26A),
                 ),
                 onPressed: () {
-                  setState(() {
-                    if (_text.text.isEmpty) {
-                      _validate = true;
-                    } else if (_text.text.isNotEmpty) {
-                      _validate = false;
-                    }
-                    if (_textpass.text.isEmpty) {
-                      _validatepass = true;
-                    } else if (_textpass.text.isNotEmpty) {
-                      _validatepass = false;
-                    } else {}
-                  });
-                  login(context);
+                  User.login(context, _text.text, _textpass.text);
                 },
                 child: const Text("Login into your acount")),
             const SizedBox(
@@ -234,16 +239,5 @@ class _loginscreenState extends State<loginscreen> {
         ),
       ),
     ));
-  }
-
-  void login(context) async {
-    user = await UserService.getUser(email: email, password: password);
-
-    if (user == null) {
-    } else if (user?.accountType == "citizen") {
-      await Navigator.of(context).pushNamed('/mainCT', arguments: user);
-    } else if (user?.accountType == "maintainer") {
-      await Navigator.of(context).pushNamed('/mainCT');
-    }
   }
 }

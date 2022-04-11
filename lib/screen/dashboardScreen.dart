@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:oms/model/account.dart';
+import 'package:oms/model/accountProvider.dart';
 import 'package:oms/screen/complaintScreen.dart';
+import 'package:provider/provider.dart';
 
 import '../model/dashboard_card.dart';
 
@@ -18,6 +20,7 @@ class dashboard extends StatefulWidget {
 class _dashboardState extends State<dashboard> {
   @override
   Widget build(BuildContext context) {
+    var user = Provider.of<accountPro>(context);
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -29,12 +32,6 @@ class _dashboardState extends State<dashboard> {
               )),
         ],
         backgroundColor: Colors.transparent,
-        leading: IconButton(
-            onPressed: (() {}),
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: Colors.black,
-            )),
       ),
       body: SafeArea(
           child: SingleChildScrollView(
@@ -52,7 +49,7 @@ class _dashboardState extends State<dashboard> {
                 Padding(
                   padding: const EdgeInsets.only(left: 12),
                   child: Text(
-                    "${widget.user?.firstname} ${widget.user?.lastname}",
+                    "${user.User?.firstname} ${user.User?.lastname}",
                     style: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.bold),
                   ),
@@ -75,14 +72,17 @@ class _dashboardState extends State<dashboard> {
             ),
             dashboardCard(
               title: "Complaint",
+              subTitle: "Complaint to public services",
               image: "assets/complaint.png",
             ),
             dashboardCard(
               title: "Status",
+              subTitle: "View the complaint form status",
               image: "assets/Status.png",
             ),
             dashboardCard(
               title: "archive",
+              subTitle: "View archived forms",
               image: "assets/Archive.png",
             ),
           ]),
