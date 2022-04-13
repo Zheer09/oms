@@ -6,8 +6,10 @@ class ThemeHelper {
       {String? lableText = "",
       String? hintText = "",
       bool? phone = false,
+      bool valid = false,
       Icon? suffixIcon}) {
     return InputDecoration(
+      errorText: valid ? 'Value Can\'t Be Empty' : null,
       labelText: lableText,
       hintText: hintText,
       fillColor: Colors.white,

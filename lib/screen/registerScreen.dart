@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:oms/model/accountProvider.dart';
+import 'package:path/path.dart' as p;
 
 import '../model/Textheme.dart';
 
@@ -20,14 +22,47 @@ class register extends StatefulWidget {
 
 // ignore: camel_case_types
 class _registerState extends State<register> {
+  accountPro? user;
+
   XFile? imageFront;
   XFile? imageBack;
+
+  String? imageFrontEX;
+  String? imageBackEx;
+
+  bool _validFirstname = false;
+  bool _validLastname = false;
+  bool _validEmail = false;
+  bool _validpassword = false;
+  bool _validpasswordre = false;
+  bool _validphoneNum = false;
+
+  final _textFirstName = TextEditingController();
+  final _textLastName = TextEditingController();
+  final _textEmail = TextEditingController();
+  final _textpassword = TextEditingController();
+  final _textpasswordre = TextEditingController();
+  final _textphone = TextEditingController();
+
+  final GlobalKey<FormState> _form = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    _textFirstName.dispose();
+    _textLastName.dispose();
+    _textEmail.dispose();
+    _textpassword.dispose();
+    _textphone.dispose();
+    _textpasswordre.dispose();
+    super.dispose();
+  }
 
   Future pickImageFront() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
       final imageTemp = File(image.path);
+      imageFrontEX = p.extension(image.path);
       setState(() {
         imageFront = imageTemp as XFile?;
       });
@@ -42,6 +77,7 @@ class _registerState extends State<register> {
       final image = await ImagePicker().pickImage(source: ImageSource.camera);
       if (image == null) return;
       final imageTemp = XFile(image.path);
+      imageFrontEX = p.extension(image.path);
       setState(() {
         imageFront = imageTemp;
       });
@@ -56,6 +92,7 @@ class _registerState extends State<register> {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
       final imageTemp = File(image.path);
+      imageBackEx = p.extension(image.path);
       setState(() {
         imageBack = imageTemp as XFile?;
       });
@@ -70,6 +107,7 @@ class _registerState extends State<register> {
       final image = await ImagePicker().pickImage(source: ImageSource.camera);
       if (image == null) return;
       final imageTemp = XFile(image.path);
+      imageBackEx = p.extension(image.path);
       setState(() {
         imageBack = imageTemp;
       });
@@ -97,6 +135,7 @@ class _registerState extends State<register> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Form(
+            key: _form,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -112,16 +151,56 @@ class _registerState extends State<register> {
                   children: [
                     SizedBox(
                         width: MediaQuery.of(context).size.width * 0.43,
-                        child: TextField(
+                        child: TextFormField(
+                            validator: (value) {
+                              setState(() {
+                                if (value!.isEmpty) {
+                                  _validFirstname = true;
+                                }
+                              });
+                              return null;
+                            },
+                            controller: _textFirstName,
                             keyboardType: TextInputType.name,
                             decoration: ThemeHelper().textInputDecoration(
-                                lableText: "First Name", hintText: "Shalaw"))),
+                                valid: _validFirstname,
+                                lableText: "First Name",
+                                hintText: "Shalaw"),
+                            onChanged: (value) {
+                              setState(() {
+                                if (_textFirstName.text.isEmpty) {
+                                  _validFirstname = true;
+                                } else if (_textFirstName.text.isNotEmpty) {
+                                  _validFirstname = false;
+                                } else {}
+                              });
+                            })),
                     SizedBox(
                         width: MediaQuery.of(context).size.width * 0.43,
-                        child: TextField(
+                        child: TextFormField(
+                            validator: (value) {
+                              setState(() {
+                                if (value!.isEmpty) {
+                                  _validLastname = true;
+                                }
+                              });
+                              return null;
+                            },
+                            controller: _textLastName,
                             keyboardType: TextInputType.name,
                             decoration: ThemeHelper().textInputDecoration(
-                                lableText: "last Name", hintText: "Ahmed"))),
+                                valid: _validLastname,
+                                lableText: "last Name",
+                                hintText: "Ahmed"),
+                            onChanged: (value) {
+                              setState(() {
+                                if (_textLastName.text.isEmpty) {
+                                  _validLastname = true;
+                                } else if (_textLastName.text.isNotEmpty) {
+                                  _validLastname = false;
+                                } else {}
+                              });
+                            })),
                   ],
                 ),
                 const SizedBox(
@@ -129,57 +208,133 @@ class _registerState extends State<register> {
                 ),
                 SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    child: TextField(
+                    child: TextFormField(
+                        validator: (value) {
+                          setState(() {
+                            if (value!.isEmpty) {
+                              _validEmail = true;
+                            }
+                          });
+                          return null;
+                        },
+                        controller: _textEmail,
                         keyboardType: TextInputType.emailAddress,
                         decoration: ThemeHelper().textInputDecoration(
+                            valid: _validEmail,
                             suffixIcon: const Icon(
                               Icons.email,
                               color: Color(0xFFC2A26A),
                             ),
                             lableText: "Enter your email address",
-                            hintText: "Example@example.com"))),
+                            hintText: "Example@example.com"),
+                        onChanged: (value) {
+                          setState(() {
+                            if (_textEmail.text.isEmpty) {
+                              _validEmail = true;
+                            } else if (_textEmail.text.isNotEmpty) {
+                              _validEmail = false;
+                            } else {}
+                          });
+                        })),
                 const SizedBox(
                   height: 20,
                 ),
                 SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    child: TextField(
-                        keyboardType: TextInputType.phone,
-                        style: const TextStyle(
-                            fontSize: 15, color: Colors.black54),
-                        decoration: ThemeHelper().textInputDecoration(
-                            suffixIcon: const Icon(
-                              Icons.phone_iphone_rounded,
-                              color: Color(0xFFC2A26A),
-                            ),
-                            lableText: "Enter your phone number",
-                            phone: true))),
+                    child: TextFormField(
+                      validator: (value) {
+                        setState(() {
+                          if (value!.isEmpty) {
+                            _validphoneNum = true;
+                          }
+                        });
+                        return null;
+                      },
+                      controller: _textphone,
+                      keyboardType: TextInputType.phone,
+                      style:
+                          const TextStyle(fontSize: 15, color: Colors.black54),
+                      decoration: ThemeHelper().textInputDecoration(
+                          valid: _validphoneNum,
+                          suffixIcon: const Icon(
+                            Icons.phone_iphone_rounded,
+                            color: Color(0xFFC2A26A),
+                          ),
+                          lableText: "Enter your phone number",
+                          phone: true),
+                      onChanged: (value) {
+                        setState(() {
+                          if (_textphone.text.isEmpty) {
+                            _validphoneNum = true;
+                          } else if (_textphone.text.isNotEmpty) {
+                            _validphoneNum = false;
+                          } else {}
+                        });
+                      },
+                    )),
                 const SizedBox(
                   height: 20,
                 ),
                 SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    child: TextField(
+                    child: TextFormField(
+                        validator: (value) {
+                          setState(() {
+                            if (value!.isEmpty) {
+                              _validpassword = true;
+                            }
+                          });
+                          return null;
+                        },
+                        controller: _textpassword,
                         keyboardType: TextInputType.visiblePassword,
                         obscureText: true,
                         decoration: ThemeHelper().textInputDecoration(
+                          valid: _validpassword,
                           suffixIcon: const Icon(
                             Icons.lock,
                             color: Color(0xFFC2A26A),
                           ),
                           lableText: "Enter your Password",
-                        ))),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            if (_textpassword.text.isEmpty) {
+                              _validpassword = true;
+                            } else if (_textpassword.text.isNotEmpty) {
+                              _validpassword = false;
+                            }
+                          });
+                        })),
                 const SizedBox(
                   height: 20,
                 ),
                 SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    child: TextField(
+                    child: TextFormField(
+                        validator: (value) {
+                          if (value != _textpassword.text) {
+                            _validpasswordre = true;
+                            return "Not Matching";
+                          }
+                          return null;
+                        },
+                        controller: _textpasswordre,
                         keyboardType: TextInputType.visiblePassword,
                         obscureText: true,
                         decoration: ThemeHelper().textInputDecoration(
+                          valid: _validpasswordre,
                           lableText: "Re-enter your Password",
-                        ))),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            if (_textpasswordre.text.isEmpty) {
+                              _validpasswordre = true;
+                            } else if (_textpasswordre.text.isNotEmpty) {
+                              _validpasswordre = false;
+                            }
+                          });
+                        })),
                 const SizedBox(
                   height: 25,
                 ),
@@ -539,7 +694,23 @@ class _registerState extends State<register> {
                             borderRadius: BorderRadius.circular(30)),
                         primary: const Color(0xFFC2A26A),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        if (imageBack == null || imageFront == null) {
+                          _form.currentState!.validate();
+
+                          print("Empty");
+                        } else {
+                          _form.currentState!.validate()
+                              ? user?.register(
+                                  context,
+                                  _textFirstName.text,
+                                  _textLastName.text,
+                                  _textEmail.text,
+                                  _textphone.text,
+                                  _textpassword.text)
+                              : null;
+                        }
+                      },
                       child: const Text("Submit")),
                 ),
                 const SizedBox(

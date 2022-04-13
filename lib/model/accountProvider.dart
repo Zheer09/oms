@@ -34,6 +34,8 @@ class accountPro extends ChangeNotifier {
 
     setUser(user);
 
+    var upload = await UserService.uploadUserPic();
+
     if (user == null) {
     } else if (user.accountType == "citizen") {
       await Navigator.of(context).pushNamed('/mainCT');
