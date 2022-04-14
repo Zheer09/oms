@@ -6,6 +6,8 @@ class account {
   String? _firstname;
   String? _lastname;
   String? _accountType;
+  String? _backID;
+  String? _frontID;
 
   get id => _id;
   set id(value) => _id = id;
@@ -59,12 +61,20 @@ class account {
     _firstname = json['firstName'];
     _lastname = json['lastName'];
     _accountType = json['typeacc'];
+    _backID = json['backID'];
+    _frontID = json['frontID'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['emailaddress'] = _emailaddress;
     data['password'] = _password;
+    data['id'] = _id;
+    data['firstName'] = _firstname;
+    data['lastName'] = _lastname;
+    data['typeacc'] = _accountType;
+    data['backID'] = _backID;
+    data['frontID'] = _frontID;
     return data;
   }
 }

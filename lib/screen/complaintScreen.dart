@@ -25,7 +25,7 @@ class _complaintState extends State<complaint> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  "Create an account",
+                  "Submit complaint form",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                 ),
                 const SizedBox(
@@ -193,7 +193,7 @@ class _complaintState extends State<complaint> {
                         primary: const Color(0xFFC2A26A),
                       ),
                       onPressed: () {},
-                      child: const Text("Submit")),
+                      child: const Text("Submit form")),
                 ),
                 const SizedBox(
                   height: 10,

@@ -74,6 +74,8 @@ class _dashboardState extends State<dashboard> {
               title: "Complaint",
               subTitle: "Complaint to public services",
               image: "assets/complaint.png",
+              context: context,
+              router: "/complaintCT",
             ),
             dashboardCard(
               title: "Status",

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class dashboardCard extends StatefulWidget {
-  dashboardCard({Key? key, this.title, this.subTitle, this.image})
+  dashboardCard(
+      {Key? key, this.title, this.subTitle, this.image, this.router, context})
       : super(key: key);
 
   String? title;
   String? subTitle;
   String? image;
+  String? router;
 
   @override
   State<dashboardCard> createState() => _dashboardCardState();
@@ -23,8 +25,7 @@ class _dashboardCardState extends State<dashboardCard> {
             borderRadius: BorderRadius.all(Radius.circular(12))),
         child: InkWell(
             onTap: () {
-              // Navigator.of(context).push(MaterialPageRoute(
-              //     builder: (context) => widget.callback()));
+              Navigator.of(context).pushNamed("${widget.router}");
             },
             child: SizedBox(
               width: MediaQuery.of(context).size.width,
