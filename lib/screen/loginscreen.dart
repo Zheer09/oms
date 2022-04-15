@@ -3,11 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:oms/model/account.dart';
 import 'package:oms/model/accountProvider.dart';
-import 'package:oms/screen/dashboardScreen.dart';
 import 'package:oms/screen/registerScreen.dart';
 import 'package:provider/provider.dart';
-
-import '../service/userAcc_service.dart';
 
 // ignore: camel_case_types
 class loginscreen extends StatefulWidget {
@@ -23,7 +20,7 @@ class loginscreen extends StatefulWidget {
 // ignore: camel_case_types
 class _loginscreenState extends State<loginscreen> {
   bool? checkedValue = false;
-  late final account? user;
+
   String? email;
   String? password;
   final _text = TextEditingController();

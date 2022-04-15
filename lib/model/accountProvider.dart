@@ -1,9 +1,13 @@
-import 'package:flutter/foundation.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:oms/model/account.dart';
 
 import '../service/userAcc_service.dart';
+import 'package:oms/model/uploadurl.dart';
 
+// ignore: camel_case_types
 class accountPro extends ChangeNotifier {
   void setUser(account? user) {
     User = user;
@@ -28,15 +32,56 @@ class accountPro extends ChangeNotifier {
     }
   }
 
-  void register(context, firstName, lastName, email, phoneNum, password) async {
-    account? user;
-    user = await UserService.getUser(email: email, password: password);
+  void register(
+      context,
+      firstName,
+      lastName,
+      email,
+      phoneNum,
+      password,
+      imageFrontText,
+      imageBackText,
+      imageFrontEX,
+      imageBackEX,
+      imageFront,
+      imageBack) async {
+    account? userSet;
+    account? user = account(
+        emailaddress: email,
+        firstname: firstName,
+        lastname: lastName,
+        phone: phoneNum,
+        password: password,
+        accountType: "citizen",
+        status: "pending",
+        imageBack: imageBackText,
+        imageFornt: imageFrontText);
 
-    setUser(user);
+    userSet = await UserService.createUser(user: user);
 
-    var upload = await UserService.uploadUserPic();
+    if (userSet != null) {
+      print("Success");
+    } else {
+      print("Nothing");
+    }
 
-    if (user == null) {
+    UploadFile? uploadSet;
+    UploadFile? upload = UploadFile(
+        userid: userSet?.id, filename: imageFrontText, filetype: imageFrontEX);
+
+    uploadSet = await UserService.uploadUserPic(body: upload);
+
+    await uploadSet?.call(uploadSet.uploadUrl, imageFront);
+
+    UploadFile? upload1 = UploadFile(
+        userid: userSet?.id, filename: imageBackText, filetype: imageBackEX);
+
+    upload1 = await UserService.uploadUserPic(body: upload1);
+
+    await upload1!.call(upload1.uploadUrl, imageBack);
+
+    setUser(userSet);
+    if (userSet == null) {
     } else if (user.accountType == "citizen") {
       await Navigator.of(context).pushNamed('/mainCT');
     } else if (user.accountType == "maintainer") {

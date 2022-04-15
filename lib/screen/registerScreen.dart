@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:oms/model/accountProvider.dart';
 import 'package:path/path.dart' as p;
+import 'package:provider/provider.dart';
 
 import '../model/Textheme.dart';
 
@@ -22,7 +23,7 @@ class register extends StatefulWidget {
 
 // ignore: camel_case_types
 class _registerState extends State<register> {
-  accountPro? user;
+  //accountPro? user;
 
   XFile? imageFront;
   XFile? imageBack;
@@ -119,6 +120,7 @@ class _registerState extends State<register> {
 
   @override
   Widget build(BuildContext context) {
+    var user = Provider.of<accountPro>(context);
     return Scaffold(
       appBar: AppBar(
           backgroundColor: Colors.transparent,
@@ -379,6 +381,7 @@ class _registerState extends State<register> {
                                                   children: [
                                                     InkWell(
                                                       onTap: () {
+                                                        Navigator.pop(context);
                                                         pickCameraBack();
                                                       },
                                                       child:
@@ -694,20 +697,26 @@ class _registerState extends State<register> {
                             borderRadius: BorderRadius.circular(30)),
                         primary: const Color(0xFFC2A26A),
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         if (imageBack == null || imageFront == null) {
                           _form.currentState!.validate();
 
                           print("Empty");
                         } else {
                           _form.currentState!.validate()
-                              ? user?.register(
+                              ? user.register(
                                   context,
                                   _textFirstName.text,
                                   _textLastName.text,
                                   _textEmail.text,
                                   _textphone.text,
-                                  _textpassword.text)
+                                  _textpassword.text,
+                                  imageFront!.name.toString(),
+                                  imageBack!.name.toString(),
+                                  imageFrontEX,
+                                  imageBackEx,
+                                  imageBack,
+                                  imageFront)
                               : null;
                         }
                       },

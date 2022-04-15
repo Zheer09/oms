@@ -12,6 +12,17 @@ class complaint extends StatefulWidget {
 }
 
 class _complaintState extends State<complaint> {
+  String? dropdownvalue;
+
+  // List of items in our dropdown menu
+  var items = [
+    'Item 1',
+    'Item 2',
+    'Item 3',
+    'Item 4',
+    'Item 5',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,37 +42,36 @@ class _complaintState extends State<complaint> {
                 const SizedBox(
                   height: 20,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.43,
-                        child: TextField(
-                            keyboardType: TextInputType.name,
-                            decoration: ThemeHelper().textInputDecoration(
-                                lableText: "First Name", hintText: "Shalaw"))),
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.43,
-                        child: TextField(
-                            keyboardType: TextInputType.name,
-                            decoration: ThemeHelper().textInputDecoration(
-                                lableText: "last Name", hintText: "Ahmed"))),
-                  ],
-                ),
+                SizedBox(
+                    child: TextField(
+                        keyboardType: TextInputType.name,
+                        decoration: ThemeHelper().textInputDecoration(
+                            lableText: "Title of the issue",
+                            hintText: "ex: poteholes"))),
                 const SizedBox(
                   height: 20,
                 ),
                 SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: TextField(
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: ThemeHelper().textInputDecoration(
-                            suffixIcon: const Icon(
-                              Icons.email,
-                              color: Color(0xFFC2A26A),
-                            ),
-                            lableText: "Enter your email address",
-                            hintText: "Example@example.com"))),
+                  width: MediaQuery.of(context).size.width,
+                  child: DropdownButtonFormField(
+                    decoration: ThemeHelper().textInputDecoration(
+                        lableText: "Title of the issue",
+                        hintText: "ex: poteholes"),
+                    value: dropdownvalue,
+                    icon: const Icon(Icons.keyboard_arrow_down),
+                    items: items.map((String items) {
+                      return DropdownMenuItem(
+                        value: items,
+                        child: Text(items),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        dropdownvalue = newValue!;
+                      });
+                    },
+                  ),
+                ),
                 const SizedBox(
                   height: 20,
                 ),

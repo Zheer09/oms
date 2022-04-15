@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:oms/model/account.dart';
 import 'package:oms/model/accountProvider.dart';
-import 'package:oms/screen/complaintScreen.dart';
 import 'package:provider/provider.dart';
 
 import '../model/dashboard_card.dart';
@@ -22,7 +21,9 @@ class _dashboardState extends State<dashboard> {
   Widget build(BuildContext context) {
     var user = Provider.of<accountPro>(context);
     return Scaffold(
+      extendBody: true,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(
               onPressed: (() {}),
@@ -32,6 +33,7 @@ class _dashboardState extends State<dashboard> {
               )),
         ],
         backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
       body: SafeArea(
           child: SingleChildScrollView(
