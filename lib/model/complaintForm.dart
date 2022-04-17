@@ -1,65 +1,80 @@
+// ignore: file_names
 class complaintForm {
   int? _userID;
-  String? _formID;
+  int? _formID;
   String? _fromTitle;
   String? _department;
   String? _issueType;
+  String? _location;
   String? _issueDecription;
-  List<String>? _formImages;
-  Null? _jobTitle;
+  List<dynamic>? _formImages;
+  String? _status;
 
   complaintForm(
       {int? userID,
-      String? formID,
+      int? formID,
       String? fromTitle,
       String? department,
       String? issueType,
       String? issueDecription,
       List<String>? formImages,
-      Null? jobTitle}) {
+      String? status,
+      String? location}) {
     if (userID != null) {
-      this._userID = userID;
+      _userID = userID;
+    }
+    if (location != null) {
+      _location = location;
     }
     if (formID != null) {
-      this._formID = formID;
+      _formID = formID;
     }
     if (fromTitle != null) {
-      this._fromTitle = fromTitle;
+      _fromTitle = fromTitle;
     }
     if (department != null) {
-      this._department = department;
+      _department = department;
     }
     if (issueType != null) {
-      this._issueType = issueType;
+      _issueType = issueType;
     }
     if (issueDecription != null) {
-      this._issueDecription = issueDecription;
+      _issueDecription = issueDecription;
     }
     if (formImages != null) {
-      this._formImages = formImages;
+      _formImages = formImages;
     }
-    if (jobTitle != null) {
-      this._jobTitle = jobTitle;
+    if (status != null) {
+      _status = status;
     }
   }
 
-  int? get userID => _userID;
-  set userID(int? userID) => _userID = userID;
-  String? get formID => _formID;
-  set formID(String? formID) => _formID = formID;
-  String? get fromTitle => _fromTitle;
-  set fromTitle(String? fromTitle) => _fromTitle = fromTitle;
-  String? get department => _department;
-  set department(String? department) => _department = department;
-  String? get issueType => _issueType;
-  set issueType(String? issueType) => _issueType = issueType;
-  String? get issueDecription => _issueDecription;
-  set issueDecription(String? issueDecription) =>
-      _issueDecription = issueDecription;
-  List<String>? get formImages => _formImages;
-  set formImages(List<String>? formImages) => _formImages = formImages;
-  Null? get jobTitle => _jobTitle;
-  set jobTitle(Null? jobTitle) => _jobTitle = jobTitle;
+  get userID => _userID;
+  set userID(value) => _userID = userID;
+
+  get location => _location;
+  set location(value) => _location = location;
+
+  get formID => _formID;
+  set formID(value) => _formID = formID;
+
+  get fromTitle => _fromTitle;
+  set fromTitle(value) => _fromTitle = fromTitle;
+
+  get department => _department;
+  set department(value) => _department = department;
+
+  get issueType => _issueType;
+  set issueType(value) => _issueType = issueType;
+
+  get status => _status;
+  set status(value) => _status = status;
+
+  get issueDecription => _issueDecription;
+  set issueDecription(value) => _issueDecription = issueDecription;
+
+  List<dynamic>? get formImages => _formImages;
+  set formImages(value) => _formImages = formImages;
 
   complaintForm.fromJson(Map<String, dynamic> json) {
     _userID = json['userID'];
@@ -67,21 +82,32 @@ class complaintForm {
     _fromTitle = json['fromTitle'];
     _department = json['department'];
     _issueType = json['issueType'];
+    _status = json['status'];
+    _location = json['location'];
     _issueDecription = json['issueDecription'];
     _formImages = json['formImages'].cast<String>();
-    _jobTitle = json['jobTitle'];
+  }
+
+  complaintForm.fromJsonReg(Map<String, dynamic> json) {
+    _formID = json['formId'];
+    _fromTitle = json['title'];
+    _department = json['department'];
+    _issueType = json['issueType'];
+    _status = json['status'];
+    _location = json['location'];
+    _issueDecription = json['issueDecription'];
+    _formImages = json['formImages'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['userID'] = this._userID;
-    data['formID'] = this._formID;
-    data['fromTitle'] = this._fromTitle;
-    data['department'] = this._department;
-    data['issueType'] = this._issueType;
-    data['issueDecription'] = this._issueDecription;
-    data['formImages'] = this._formImages;
-    data['jobTitle'] = this._jobTitle;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = _status;
+    data['title'] = _fromTitle;
+    data['department'] = _department;
+    data['issueType'] = _issueType;
+    data['description'] = _issueDecription;
+    data['location'] = _location;
+    data['images'] = _formImages;
     return data;
   }
 }

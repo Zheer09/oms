@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:oms/model/account.dart';
 
 import '../service/userAcc_service.dart';
@@ -32,7 +29,7 @@ class accountPro extends ChangeNotifier {
     }
   }
 
-  void register(
+  Future<void> register(
       context,
       firstName,
       lastName,

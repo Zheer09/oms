@@ -7,7 +7,8 @@ class ThemeHelper {
       String? hintText = "",
       bool? phone = false,
       bool valid = false,
-      Icon? suffixIcon}) {
+      Icon? suffixIcon,
+      IconButton? suffix}) {
     return InputDecoration(
       errorText: valid ? 'Value Can\'t Be Empty' : null,
       labelText: lableText,
@@ -27,7 +28,8 @@ class ThemeHelper {
           borderSide: BorderSide(color: Color(0xFFC2A26A), width: 3.0),
           borderRadius: BorderRadius.all(Radius.circular(15.0))),
       prefixText: phone == true ? "+964 " : null,
-      suffixIcon: suffixIcon,
+      suffixIcon: suffixIcon ?? suffix,
+      //suffix: suffix,
       labelStyle: const TextStyle(fontSize: 13, color: Colors.grey),
       hintStyle: const TextStyle(fontSize: 13),
     );

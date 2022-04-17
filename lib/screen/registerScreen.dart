@@ -9,6 +9,8 @@ import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 
 import '../model/Textheme.dart';
+import '../model/account.dart';
+import '../service/userAcc_service.dart';
 
 // ignore: camel_case_types
 class register extends StatefulWidget {
@@ -27,6 +29,10 @@ class _registerState extends State<register> {
 
   XFile? imageFront;
   XFile? imageBack;
+
+  account? usercheck;
+
+  bool isLoading = false;
 
   String? imageFrontEX;
   String? imageBackEx;
@@ -122,10 +128,15 @@ class _registerState extends State<register> {
   Widget build(BuildContext context) {
     var user = Provider.of<accountPro>(context);
     return Scaffold(
+      extendBodyBehindAppBar: false,
+      extendBody: false,
       appBar: AppBar(
+          elevation: 0,
           backgroundColor: Colors.transparent,
           leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
             icon: const Icon(
               Icons.arrow_back_ios,
               color: Colors.black,
@@ -697,14 +708,17 @@ class _registerState extends State<register> {
                             borderRadius: BorderRadius.circular(30)),
                         primary: const Color(0xFFC2A26A),
                       ),
-                      onPressed: () async {
+                      onPressed: () {
                         if (imageBack == null || imageFront == null) {
                           _form.currentState!.validate();
-
-                          print("Empty");
                         } else {
-                          _form.currentState!.validate()
-                              ? user.register(
+                          checkReg();
+                          if (_form.currentState!.validate() &&
+                              usercheck?.msg == "invalidacc") {
+                            setState(() {
+                              isLoading = true;
+
+                              user.register(
                                   context,
                                   _textFirstName.text,
                                   _textLastName.text,
@@ -716,11 +730,24 @@ class _registerState extends State<register> {
                                   imageFrontEX,
                                   imageBackEx,
                                   imageBack,
-                                  imageFront)
-                              : null;
+                                  imageFront);
+
+                              isLoading = false;
+                            });
+                          }
                         }
                       },
-                      child: const Text("Submit")),
+                      child: isLoading == true
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )
+                          : const Text("Submit")),
                 ),
                 const SizedBox(
                   height: 10,
@@ -731,5 +758,9 @@ class _registerState extends State<register> {
         ),
       )),
     );
+  }
+
+  void checkReg() async {
+    usercheck = await UserService.getRegUser(email: _textEmail.text);
   }
 }
