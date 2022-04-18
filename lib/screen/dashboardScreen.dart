@@ -21,9 +21,18 @@ class _dashboardState extends State<dashboard> {
   Widget build(BuildContext context) {
     var user = Provider.of<accountPro>(context);
     return Scaffold(
-      extendBody: true,
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
+          },
+          child: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+        ),
         actions: [
           IconButton(
               onPressed: (() {}),
@@ -64,8 +73,8 @@ class _dashboardState extends State<dashboard> {
               decoration: const BoxDecoration(
                   color: Color(0xFFC2A26A),
                   image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: AssetImage("assets/Rectangle 6.png"),
+                    fit: BoxFit.fitHeight,
+                    image: AssetImage("assets/complain-dash.png"),
                   ),
                   borderRadius: BorderRadius.all(Radius.circular(17))),
             ),
@@ -84,7 +93,7 @@ class _dashboardState extends State<dashboard> {
               subTitle: "View the complaint form status",
               image: "assets/Status.png",
               context: context,
-              router: "/complaintCT",
+              router: "/viewStausCT",
             ),
             dashboardCard(
               title: "archive",

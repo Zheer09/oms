@@ -68,10 +68,10 @@ class _registerState extends State<register> {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
-      final imageTemp = File(image.path);
+      final imageTemp = XFile(image.path);
       imageFrontEX = p.extension(image.path);
       setState(() {
-        imageFront = imageTemp as XFile?;
+        imageFront = imageTemp;
       });
     } on PlatformException catch (e) {
       // ignore: avoid_print
@@ -98,10 +98,10 @@ class _registerState extends State<register> {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
-      final imageTemp = File(image.path);
+      final imageTemp = XFile(image.path);
       imageBackEx = p.extension(image.path);
       setState(() {
-        imageBack = imageTemp as XFile?;
+        imageBack = imageTemp;
       });
     } on PlatformException catch (e) {
       // ignore: avoid_print
@@ -709,15 +709,15 @@ class _registerState extends State<register> {
                         primary: const Color(0xFFC2A26A),
                       ),
                       onPressed: () {
+                        setState(() {
+                          isLoading = true;
+                        });
                         if (imageBack == null || imageFront == null) {
                           _form.currentState!.validate();
                         } else {
-                          checkReg();
-                          if (_form.currentState!.validate() &&
-                              usercheck?.msg == "invalidacc") {
+                          if (_form.currentState!.validate()) {
                             setState(() {
                               isLoading = true;
-
                               user.register(
                                   context,
                                   _textFirstName.text,
@@ -731,8 +731,6 @@ class _registerState extends State<register> {
                                   imageBackEx,
                                   imageBack,
                                   imageFront);
-
-                              isLoading = false;
                             });
                           }
                         }
@@ -758,9 +756,5 @@ class _registerState extends State<register> {
         ),
       )),
     );
-  }
-
-  void checkReg() async {
-    usercheck = await UserService.getRegUser(email: _textEmail.text);
   }
 }

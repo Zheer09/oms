@@ -37,6 +37,8 @@ class formController {
 
     for (int i = 0; i < formImages.length; i++) {
       await formImages[i]?.call(formImages[i]?.uploadUrl, images[i]);
+      await UserService.uploadUpdateForm(
+          body: formImages[i], formID: formCreateSet?.formID, userID: userID);
     }
 
     await Navigator.of(context).pushNamed('/mainCT');

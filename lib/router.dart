@@ -4,6 +4,7 @@ import 'package:oms/screen/dashboardScreen.dart';
 import 'package:oms/screen/loginscreen.dart';
 import 'package:oms/screen/registerScreen.dart';
 import 'package:oms/screen/complaintScreen.dart';
+import 'package:oms/screen/viewStatusScreen.dart';
 
 Route<dynamic>? createRoute(settings) {
   switch (settings.name) {
@@ -19,6 +20,8 @@ Route<dynamic>? createRoute(settings) {
 
     case '/complaintCT':
       return complaint.route();
+    case '/viewStausCT':
+      return viewStatus.route();
   }
   return null;
 }

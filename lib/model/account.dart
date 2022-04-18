@@ -117,11 +117,6 @@ class account {
     data['typeacc'] = _accountType;
     data['backID'] = _backID;
     data['frontID'] = _frontID;
-    return data;
-  }
-
-  Map<String, dynamic> checkregtoJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
     data['msg'] = msg;
     return data;
   }

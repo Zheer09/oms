@@ -79,7 +79,7 @@ class complaintForm {
   complaintForm.fromJson(Map<String, dynamic> json) {
     _userID = json['userID'];
     _formID = json['formID'];
-    _fromTitle = json['fromTitle'];
+    _fromTitle = json['title'];
     _department = json['department'];
     _issueType = json['issueType'];
     _status = json['status'];

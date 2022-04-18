@@ -10,6 +10,11 @@ class UserService {
     return listjson == null ? null : account.fromJson(listjson);
   }
 
+  static Future<List<complaintForm>?> getForms({int? userID}) async {
+    final List listjson = await Rest.get('api/getForms/$userID');
+    return listjson.map((json) => complaintForm.fromJson(json)).toList();
+  }
+
   static Future<account?> createUser({account? user}) async {
     final listjson = await Rest.post('api/createAcc', data: user?.regtoJson());
     return listjson == null ? null : account.fromJson(listjson);
@@ -20,15 +25,17 @@ class UserService {
     return listjson == null ? null : UploadFile.fromJson(listjson);
   }
 
-  static Future<account?> getRegUser({String? email}) async {
-    final listjson = await Rest.get('api/getreg/$email');
-    return listjson == null ? null : account.fromJson(listjson);
-  }
-
   static Future<UploadFile?> uploadUserPicForm(
       {UploadFile? body, int? formID}) async {
     final listjson =
         await Rest.post('api/uploadFormImage/$formID', data: body?.toJson());
+    return listjson == null ? null : UploadFile.fromJson(listjson);
+  }
+
+  static Future<UploadFile?> uploadUpdateForm(
+      {UploadFile? body, int? formID, int? userID}) async {
+    final listjson =
+        await Rest.put('api/updateForm/$userID/$formID', data: body?.toJson());
     return listjson == null ? null : UploadFile.fromJson(listjson);
   }
 
