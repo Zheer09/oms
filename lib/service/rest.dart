@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------------------------------------------------------------
 
 import 'dart:convert';
+import 'dart:math';
 import 'package:http/http.dart' as http;
 
 class Rest {
@@ -67,6 +68,8 @@ class Rest {
 
     if (response.statusCode == 200) {
       return;
+    } else {
+      print(response.body);
     }
     throw response;
   }

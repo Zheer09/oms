@@ -10,16 +10,19 @@ class complaintForm {
   List<dynamic>? _formImages;
   String? _status;
 
-  complaintForm(
-      {int? userID,
-      int? formID,
-      String? fromTitle,
-      String? department,
-      String? issueType,
-      String? issueDecription,
-      List<String>? formImages,
-      String? status,
-      String? location}) {
+  String? _msg;
+
+  complaintForm({
+    int? userID,
+    int? formID,
+    String? fromTitle,
+    String? department,
+    String? issueType,
+    String? issueDecription,
+    List<String>? formImages,
+    String? status,
+    String? location,
+  }) {
     if (userID != null) {
       _userID = userID;
     }
@@ -58,6 +61,9 @@ class complaintForm {
   get formID => _formID;
   set formID(value) => _formID = formID;
 
+  get msg => _msg;
+  set msg(value) => _msg = msg;
+
   get fromTitle => _fromTitle;
   set fromTitle(value) => _fromTitle = fromTitle;
 
@@ -78,7 +84,7 @@ class complaintForm {
 
   complaintForm.fromJson(Map<String, dynamic> json) {
     _userID = json['userID'];
-    _formID = json['formID'];
+    _formID = json['formId'];
     _fromTitle = json['title'];
     _department = json['department'];
     _issueType = json['issueType'];
@@ -97,6 +103,10 @@ class complaintForm {
     _location = json['location'];
     _issueDecription = json['issueDecription'];
     _formImages = json['formImages'];
+  }
+
+  complaintForm.deleteJson(Map<String, dynamic> json) {
+    _msg = json['msg'];
   }
 
   Map<String, dynamic> toJson() {

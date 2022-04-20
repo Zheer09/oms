@@ -20,6 +20,8 @@ class formController {
     complaintForm? formCreateSet;
     List<UploadFile?> formImages = [];
 
+    List<String?> fileName = [];
+
     formCreateSet =
         await UserService.createForm(form: formCreate, userID: userID);
 
@@ -32,14 +34,16 @@ class formController {
             body: tempform, formID: formCreateSet.formID);
 
         formImages.add(temp);
+        fileName.add(images[i].name);
       }
     }
 
     for (int i = 0; i < formImages.length; i++) {
       await formImages[i]?.call(formImages[i]?.uploadUrl, images[i]);
-      await UserService.uploadUpdateForm(
-          body: formImages[i], formID: formCreateSet?.formID, userID: userID);
     }
+
+    await UserService.uploadUpdateForm(
+        body: fileName, formID: formCreateSet?.formID, userID: userID);
 
     await Navigator.of(context).pushNamed('/mainCT');
   }

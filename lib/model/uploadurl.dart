@@ -54,4 +54,8 @@ class UploadFile {
     uploadUrl = json['uploadUrl'];
     downloadUrl = json['downloadUrl'];
   }
+
+  UploadFile.deleteJson(Map<String, dynamic> json) {
+    message = json['message'];
+  }
 }

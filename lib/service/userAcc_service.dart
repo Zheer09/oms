@@ -33,10 +33,17 @@ class UserService {
   }
 
   static Future<UploadFile?> uploadUpdateForm(
-      {UploadFile? body, int? formID, int? userID}) async {
+      {List<String?>? body, int? formID, int? userID}) async {
     final listjson =
-        await Rest.put('api/updateForm/$userID/$formID', data: body?.toJson());
+        await Rest.put('api/updateForm/$userID/$formID', data: body);
     return listjson == null ? null : UploadFile.fromJson(listjson);
+  }
+
+  static Future<UploadFile?> deleteFormImages(
+      {Map<String, dynamic>? body, int? formID, int? userID}) async {
+    final listjson =
+        await Rest.put('api/deleteImage/$userID/$formID', data: body);
+    return listjson == null ? null : UploadFile.deleteJson(listjson);
   }
 
   static Future<complaintForm?> createForm(
@@ -46,5 +53,10 @@ class UserService {
         await Rest.post('api/createForm/$userID', data: form?.toJson());
 
     return listjson == null ? null : complaintForm.fromJsonReg(listjson);
+  }
+
+  static Future<complaintForm?> deletForm({int? formID}) async {
+    final listjson = await Rest.delete('api/deleteForm/$formID');
+    return listjson == null ? null : complaintForm.deleteJson(listjson);
   }
 }
