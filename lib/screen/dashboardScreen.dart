@@ -29,18 +29,10 @@ class _dashboardState extends State<dashboard> {
                 .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
           },
           child: const Icon(
-            Icons.arrow_back_ios,
+            Icons.logout,
             color: Colors.black,
           ),
         ),
-        actions: [
-          IconButton(
-              onPressed: (() {}),
-              icon: const Icon(
-                Icons.menu,
-                color: Colors.black,
-              )),
-        ],
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -53,18 +45,27 @@ class _dashboardState extends State<dashboard> {
             const SizedBox(height: 25),
             Row(
               children: [
-                CircleAvatar(
-                  radius: 25,
-                  backgroundImage: NetworkImage("https://i.pravatar.cc/300"),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 12),
-                  child: Text(
-                    "${user.User?.firstname} ${user.User?.lastname}",
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                )
+                InkWell(
+                    onTap: () {
+                      Navigator.of(context).pushNamed("/viewFormCT");
+                    },
+                    child: Row(children: [
+                      const CircleAvatar(
+                        backgroundImage: AssetImage("assets/profile.jpg"),
+                        radius: 25,
+                        backgroundColor: Color(0xFFC2A26A),
+
+                        //backgroundImage: NetworkImage("https://i.pravatar.cc/300"),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 12),
+                        child: Text(
+                          "${user.User?.firstname} ${user.User?.lastname}",
+                          style: const TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    ])),
               ],
             ),
             const SizedBox(height: 40),
@@ -99,6 +100,8 @@ class _dashboardState extends State<dashboard> {
               title: "archive",
               subTitle: "View archived forms",
               image: "assets/Archive.png",
+              context: context,
+              router: "/archiveFormCT",
             ),
           ]),
         ),

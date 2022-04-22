@@ -11,7 +11,7 @@ class loginscreen extends StatefulWidget {
   const loginscreen({Key? key}) : super(key: key);
 
   static Route route() =>
-      MaterialPageRoute(builder: (context) => loginscreen());
+      MaterialPageRoute(builder: (context) => const loginscreen());
 
   @override
   State<loginscreen> createState() => _loginscreenState();
@@ -236,5 +236,23 @@ class _loginscreenState extends State<loginscreen> {
         ),
       ),
     ));
+  }
+
+  void showSnackBar(BuildContext context) {
+    const snackbar = SnackBar(
+      content: Text(
+        "Email or password invalid",
+        textAlign: TextAlign.center,
+      ),
+      backgroundColor: Colors.green,
+      duration: Duration(seconds: 1),
+      shape: StadiumBorder(),
+      margin: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+      behavior: SnackBarBehavior.floating,
+      elevation: 0,
+    );
+
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 }

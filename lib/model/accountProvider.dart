@@ -15,7 +15,7 @@ class accountPro extends ChangeNotifier {
   // ignore: non_constant_identifier_names
   account? User;
 
-  void login(context, email, password) async {
+  Future<void> login(context, email, password) async {
     account? user;
     user = await UserService.getUser(email: email, password: password);
 
@@ -25,6 +25,24 @@ class accountPro extends ChangeNotifier {
     } else if (user.accountType == "citizen") {
       await Navigator.of(context).pushNamed('/mainCT');
     } else if (user.accountType == "maintainer") {
+      await Navigator.of(context).pushNamed('/mainCT');
+    }
+  }
+
+  Future<void> update(
+      context, userID, firstName, lastName, phoneNumber, password) async {
+    account? users = account(
+        firstname: firstName,
+        lastname: lastName,
+        password: password,
+        phone: phoneNumber);
+
+    account? user;
+    user = await UserService.updateUser(user: users, userID: userID);
+
+    setUser(user);
+
+    if (user != null) {
       await Navigator.of(context).pushNamed('/mainCT');
     }
   }

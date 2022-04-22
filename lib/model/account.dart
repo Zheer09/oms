@@ -120,4 +120,13 @@ class account {
     data['msg'] = msg;
     return data;
   }
+
+  Map<String, dynamic> updatetoJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['password'] = _password;
+    data['phoneNumber'] = _phoneNum;
+    data['firstName'] = _firstname;
+    data['lastName'] = _lastname;
+    return data;
+  }
 }

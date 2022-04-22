@@ -94,6 +94,17 @@ class complaintForm {
     _formImages = json['formImages'].cast<String>();
   }
 
+  complaintForm.fromJsonupdate(Map<String, dynamic> json) {
+    _userID = json['userID'];
+    _formID = json['formId'];
+    _fromTitle = json['title'];
+    _department = json['department'];
+    _issueType = json['issueType'];
+    _status = json['status'];
+    _location = json['location'];
+    _issueDecription = json['issueDecription'];
+  }
+
   complaintForm.fromJsonReg(Map<String, dynamic> json) {
     _formID = json['formId'];
     _fromTitle = json['title'];
