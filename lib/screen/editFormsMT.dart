@@ -8,16 +8,16 @@ import '../model/accountProvider.dart';
 import '../model/complaintForm.dart';
 import '../service/userAcc_service.dart';
 
-class editForm extends StatefulWidget {
-  editForm({Key? key, this.forms}) : super(key: key);
+class editFormMT extends StatefulWidget {
+  editFormMT({Key? key, this.forms}) : super(key: key);
 
   complaintForm? forms;
 
   @override
-  State<editForm> createState() => _editFormState();
+  State<editFormMT> createState() => _editFormState();
 }
 
-class _editFormState extends State<editForm> {
+class _editFormState extends State<editFormMT> {
   final GlobalKey<FormState> _for = GlobalKey<FormState>();
 
   late String? dropdownvalue = "${widget.forms?.department}";
@@ -114,6 +114,8 @@ class _editFormState extends State<editForm> {
                           });
                         },
                         controller: _texttitle,
+                        enableInteractiveSelection: false,
+                        readOnly: true,
                         decoration: ThemeHelper().textInputDecoration(
                             lableText: "Title of the issue",
                             valid: _validtitle,
@@ -185,6 +187,8 @@ class _editFormState extends State<editForm> {
                         style: const TextStyle(
                           fontSize: 15,
                         ),
+                        enableInteractiveSelection: false,
+                        readOnly: true,
                         decoration: ThemeHelper().textInputDecoration(
                             lableText: "Enter your Issue type",
                             valid: _validissueTyp))),
@@ -286,7 +290,7 @@ class _editFormState extends State<editForm> {
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(10.0),
                           child: Image.network(
-                            "https://oms-pic.s3.amazonaws.com/User${user.User?.id}/Form${widget.forms?.formID}/${widget.forms?.formImages![itemIndex]}",
+                            "https://oms-pic.s3.amazonaws.com/User${widget.forms?.user.id}/Form${widget.forms?.formID}/${widget.forms?.formImages![itemIndex]}",
                             fit: BoxFit.cover,
                           )),
                     ),
@@ -314,7 +318,8 @@ class _editFormState extends State<editForm> {
                             _textissueType.text,
                             _textLocation.text,
                             _textDescription.text,
-                            user.User?.id);
+                            widget.forms?.status,
+                            widget.forms?.user.id);
                       },
                       child: isLoading == true
                           ? const SizedBox(
@@ -326,7 +331,7 @@ class _editFormState extends State<editForm> {
                                 ),
                               ),
                             )
-                          : const Text("Submit")),
+                          : const Text("Update")),
                 ),
                 const SizedBox(
                   height: 10,
@@ -339,8 +344,8 @@ class _editFormState extends State<editForm> {
     );
   }
 
-  Future<void> updateForm(
-      title, department, type, location, description, int? userID) async {
+  Future<void> updateForm(title, department, type, location, description,
+      status, int? userID) async {
     complaintForm send = complaintForm(
         formID: widget.forms?.formID,
         fromTitle: title,
@@ -348,13 +353,13 @@ class _editFormState extends State<editForm> {
         issueType: type,
         location: location,
         issueDecription: description,
-        status: "pending");
+        status: status);
 
     complaintForm? res = await UserService.updateForm(
         formID: widget.forms?.formID, userID: userID, body: send);
 
     if (res != null) {
-      Navigator.of(context).pushNamed("/mainCT");
+      Navigator.of(context).pushNamed("/mainMT");
     }
   }
 }

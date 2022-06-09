@@ -15,9 +15,11 @@ class accountPro extends ChangeNotifier {
   // ignore: non_constant_identifier_names
   account? User;
 
-  Future<void> login(context, email, password) async {
+  Future<account?> login(context, email, password) async {
     account? user;
     user = await UserService.getUser(email: email, password: password);
+
+    print(user?.msg);
 
     setUser(user);
 
@@ -25,8 +27,10 @@ class accountPro extends ChangeNotifier {
     } else if (user.accountType == "citizen") {
       await Navigator.of(context).pushNamed('/mainCT');
     } else if (user.accountType == "maintainer") {
-      await Navigator.of(context).pushNamed('/mainCT');
+      await Navigator.of(context).pushNamed('/mainMT');
     }
+
+    return user;
   }
 
   Future<void> update(
@@ -42,8 +46,11 @@ class accountPro extends ChangeNotifier {
 
     setUser(user);
 
-    if (user != null) {
+    if (user == null) {
+    } else if (user.accountType == "citizen") {
       await Navigator.of(context).pushNamed('/mainCT');
+    } else if (user.accountType == "maintainer") {
+      await Navigator.of(context).pushNamed('/mainMT');
     }
   }
 
@@ -104,7 +111,7 @@ class accountPro extends ChangeNotifier {
       } else if (user.accountType == "citizen") {
         await Navigator.of(context).pushNamed('/mainCT');
       } else if (user.accountType == "maintainer") {
-        await Navigator.of(context).pushNamed('/mainCT');
+        await Navigator.of(context).pushNamed('/mainMT');
       }
     }
   }

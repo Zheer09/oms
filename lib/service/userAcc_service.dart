@@ -15,6 +15,11 @@ class UserService {
     return listjson.map((json) => complaintForm.fromJson(json)).toList();
   }
 
+  static Future<List<complaintForm>?> allGetForms() async {
+    final List listjson = await Rest.get('api/getallForms');
+    return listjson.map((json) => complaintForm.fromJsonMT(json)).toList();
+  }
+
   static Future<account?> createUser({account? user}) async {
     final listjson = await Rest.post('api/createAcc', data: user?.regtoJson());
     return listjson == null ? null : account.fromJson(listjson);

@@ -9,6 +9,7 @@ import '../model/uploadurl.dart';
 import '../service/userAcc_service.dart';
 import 'editForms.dart';
 import 'formScreen.dart';
+import 'viewFormMT.dart';
 
 class viewStatus extends StatefulWidget {
   const viewStatus({Key? key}) : super(key: key);
@@ -67,192 +68,211 @@ class _viewStatusState extends State<viewStatus> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         form = snapshot.data!;
+
                         return SizedBox(
                           height: MediaQuery.of(context).size.height,
                           child: ListView.builder(
                             itemCount: form.length,
-                            itemBuilder: (context, index) => Column(children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 20),
-                                child: Slidable(
-                                  key: ValueKey(index),
-                                  endActionPane: ActionPane(
-                                      dismissible: form[index]?.status ==
-                                              "pending"
-                                          ? DismissiblePane(
-                                              onDismissed: () async {
-                                              await deleteForm(
-                                                  formID: form[index]?.formID,
-                                                  userID: user.User?.id,
-                                                  formimages:
-                                                      form[index]?.formImages);
+                            itemBuilder: (context, index) =>
+                                form[index]?.status != "Done"
+                                    ? Column(children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20),
+                                          child: Slidable(
+                                            key: ValueKey(index),
+                                            endActionPane: ActionPane(
+                                                dismissible: form[index]
+                                                            ?.status ==
+                                                        "pending"
+                                                    ? DismissiblePane(
+                                                        onDismissed: () async {
+                                                        await deleteForm(
+                                                            formID: form[index]
+                                                                ?.formID,
+                                                            userID:
+                                                                user.User?.id,
+                                                            formimages: form[
+                                                                    index]
+                                                                ?.formImages);
 
-                                              setState(() {
-                                                getform();
-                                              });
-                                            })
-                                          : null,
-                                      motion: const DrawerMotion(),
-                                      children: form[index]?.status == "pending"
-                                          ? [
-                                              SlidableAction(
-                                                onPressed:
-                                                    (BuildContext context) {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            editForm(
-                                                              forms:
-                                                                  form[index],
-                                                            )),
-                                                  );
-                                                },
-                                                icon: Icons.edit,
-                                                foregroundColor: Colors.white,
-                                                label: "Edit",
-                                                backgroundColor:
-                                                    Colors.blueAccent,
-                                              ),
-                                              SlidableAction(
-                                                onPressed: (BuildContext
-                                                    context) async {
-                                                  await deleteForm(
-                                                      formID:
-                                                          form[index]?.formID,
-                                                      userID: user.User?.id,
-                                                      formimages: form[index]
-                                                          ?.formImages);
+                                                        setState(() {
+                                                          getform();
+                                                        });
+                                                      })
+                                                    : null,
+                                                motion: const DrawerMotion(),
+                                                children: form[index]?.status ==
+                                                        "pending"
+                                                    ? [
+                                                        SlidableAction(
+                                                          onPressed:
+                                                              (BuildContext
+                                                                  context) {
+                                                            Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          editForm(
+                                                                            forms:
+                                                                                form[index],
+                                                                          )),
+                                                            );
+                                                          },
+                                                          icon: Icons.edit,
+                                                          foregroundColor:
+                                                              Colors.white,
+                                                          label: "Edit",
+                                                          backgroundColor:
+                                                              Colors.blueAccent,
+                                                        ),
+                                                        SlidableAction(
+                                                          onPressed: (BuildContext
+                                                              context) async {
+                                                            await deleteForm(
+                                                                formID: form[
+                                                                        index]
+                                                                    ?.formID,
+                                                                userID: user
+                                                                    .User?.id,
+                                                                formimages: form[
+                                                                        index]
+                                                                    ?.formImages);
 
-                                                  setState(() {
-                                                    getform();
-                                                  });
-                                                },
-                                                icon: Icons.delete,
-                                                label: "Delete",
-                                                foregroundColor: Colors.white,
-                                                backgroundColor:
-                                                    Colors.redAccent,
-                                              ),
-                                            ]
-                                          : []),
-                                  child: Card(
-                                    elevation: 5,
-                                    shadowColor: Colors.black45,
-                                    shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(12))),
-                                    child: InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => viewForm(
-                                                      forms: form[index],
-                                                    )),
-                                          );
-                                        },
-                                        child: SizedBox(
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.18,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(10),
-                                            child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: [
-                                                      Image(
-                                                          image: AssetImage(
-                                                              "assets/complaint.png")),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(left: 15),
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
+                                                            setState(() {
+                                                              getform();
+                                                            });
+                                                          },
+                                                          icon: Icons.delete,
+                                                          label: "Delete",
+                                                          foregroundColor:
+                                                              Colors.white,
+                                                          backgroundColor:
+                                                              Colors.redAccent,
+                                                        ),
+                                                      ]
+                                                    : []),
+                                            child: Card(
+                                              elevation: 5,
+                                              shadowColor: Colors.black45,
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  12))),
+                                              child: InkWell(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              viewForm(
+                                                                forms:
+                                                                    form[index],
+                                                              )),
+                                                    );
+                                                  },
+                                                  child: SizedBox(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.18,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              10),
+                                                      child: Row(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
-                                                                  .center,
+                                                                  .spaceBetween,
                                                           children: [
-                                                            Text(
-                                                              "${form[index]?.fromTitle}",
-                                                              style: const TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize: 20),
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Image(
+                                                                    image: AssetImage(
+                                                                        "assets/complaint.png")),
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      left: 15),
+                                                                  child: Column(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    children: [
+                                                                      Text(
+                                                                        "${form[index]?.fromTitle}",
+                                                                        style: const TextStyle(
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            fontSize: 20),
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      Text(
+                                                                        "${form[index]?.issueType}",
+                                                                        overflow:
+                                                                            TextOverflow.clip,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                11,
+                                                                            color:
+                                                                                Colors.grey),
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ],
                                                             ),
-                                                            const SizedBox(
-                                                              height: 5,
-                                                            ),
-                                                            Text(
-                                                              "${form[index]?.issueType}",
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .clip,
-                                                              style: const TextStyle(
-                                                                  fontSize: 11,
-                                                                  color: Colors
-                                                                      .grey),
+                                                            Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                Icon(Icons
+                                                                    .arrow_forward_ios),
+                                                                Text(
+                                                                  "${form[index]?.status}",
+                                                                  style: TextStyle(
+                                                                      fontSize: 13,
+                                                                      color: form[index]?.status == "In Progress"
+                                                                          ? Colors.orangeAccent
+                                                                          : form[index]?.status == "approved"
+                                                                              ? Colors.greenAccent
+                                                                              : Colors.grey,
+                                                                      fontWeight: FontWeight.w500),
+                                                                )
+                                                              ],
                                                             )
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.end,
-                                                    children: [
-                                                      Icon(Icons
-                                                          .arrow_forward_ios),
-                                                      Text(
-                                                        "${form[index]?.status}",
-                                                        style: TextStyle(
-                                                            fontSize: 13,
-                                                            color: form[index]
-                                                                        ?.status ==
-                                                                    "In Progress"
-                                                                ? Colors
-                                                                    .orangeAccent
-                                                                : form[index]
-                                                                            ?.status ==
-                                                                        "Approved"
-                                                                    ? Colors
-                                                                        .greenAccent
-                                                                    : Colors
-                                                                        .grey,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
-                                                      )
-                                                    ],
-                                                  )
-                                                ]),
+                                                          ]),
+                                                    ),
+                                                  )),
+                                            ),
                                           ),
-                                        )),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 11,
-                              )
-                            ]),
+                                        ),
+                                        const SizedBox(
+                                          height: 11,
+                                        )
+                                      ])
+                                    : Column(),
                           ),
                         );
                       } else {

@@ -89,6 +89,14 @@ class account {
     _lastname = json['lastName'];
     _accountType = json['typeacc'];
     _status = json['status'];
+    msg = json['msg'];
+  }
+
+  account.fromJsonMT(Map<String, dynamic> json) {
+    _id = json['id'];
+    _accountType = json['typeacc'];
+    _status = json['status'];
+    msg = json['msg'];
   }
 
   Map<String, dynamic> toJson() {

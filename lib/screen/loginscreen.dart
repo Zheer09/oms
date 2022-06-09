@@ -21,6 +21,8 @@ class loginscreen extends StatefulWidget {
 class _loginscreenState extends State<loginscreen> {
   bool? checkedValue = false;
 
+  account? check;
+
   String? email;
   String? password;
   final _text = TextEditingController();
@@ -37,6 +39,7 @@ class _loginscreenState extends State<loginscreen> {
   bool _validatepass = false;
   @override
   Widget build(BuildContext context) {
+    // ignore: non_constant_identifier_names
     var User = Provider.of<accountPro>(context);
     return Scaffold(
         body: SafeArea(
@@ -153,67 +156,31 @@ class _loginscreenState extends State<loginscreen> {
                 ),
               ),
             ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.85,
-              height: MediaQuery.of(context).size.width * 0.1,
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Checkbox(
-                            value: checkedValue,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                checkedValue = value;
-                              });
-                            }),
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              checkedValue = !checkedValue!;
-                            });
-                          },
-                          child: const Text(
-                            "Remember me",
-                            style: TextStyle(
-                              color: Color(0xFFC2A26A),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: InkWell(
-                        // ignore: avoid_print
-                        onTap: () => {print("object")},
-                        child: const Text(
-                          "Forget Password?",
-                          style: TextStyle(
-                            color: Color(0xFFC2A26A),
-                          ),
-                        ),
-                      ),
-                    )
-                  ]),
-            ),
-            const SizedBox(height: 40),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 30, vertical: 13),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30)),
-                  primary: const Color(0xFFC2A26A),
-                ),
-                onPressed: () {
-                  User.login(context, _text.text, _textpass.text);
-                },
-                child: const Text("Login into your acount")),
+            const SizedBox(height: 70),
+            Builder(builder: (context) {
+              return ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 13),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                    primary: const Color(0xFFC2A26A),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      // ignore: non_constant_identifier_names
+
+                      User.login(context, _text.text, _textpass.text);
+
+                      if (User.User?.msg == "invalidacc") {
+                        showSnackBar(context);
+                      }
+                    });
+                  },
+                  child: const Text("Login into your acount"));
+            }),
             const SizedBox(
-              height: 10,
+              height: 20,
             ),
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -239,15 +206,25 @@ class _loginscreenState extends State<loginscreen> {
   }
 
   void showSnackBar(BuildContext context) {
-    const snackbar = SnackBar(
-      content: Text(
-        "Email or password invalid",
-        textAlign: TextAlign.center,
+    final snackbar = SnackBar(
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: const [
+          Icon(
+            Icons.error_outline,
+            color: Colors.white,
+          ),
+          Expanded(
+            child: Text(
+              '  The email or password is invalid',
+            ),
+          ),
+        ],
       ),
-      backgroundColor: Colors.green,
-      duration: Duration(seconds: 1),
-      shape: StadiumBorder(),
-      margin: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+      backgroundColor: Colors.redAccent,
+      duration: const Duration(seconds: 1),
+      shape: const StadiumBorder(),
+      margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 60),
       behavior: SnackBarBehavior.floating,
       elevation: 0,
     );

@@ -26,6 +26,7 @@ class _viewProfileState extends State<viewProfile> {
   bool _validFirstname = false;
   bool _validLastname = false;
   bool _validEmail = false;
+  bool _validType = false;
   bool _validpassword = false;
   bool _validpasswordre = false;
   bool _validphoneNum = false;
@@ -38,6 +39,7 @@ class _viewProfileState extends State<viewProfile> {
   }
 
   late final _textFirstName = TextEditingController(text: user.User?.firstname);
+  late final _textType = TextEditingController(text: user.User?.accountType);
   late final _textLastName = TextEditingController(text: user.User?.lastname);
   late final _textEmail = TextEditingController(text: user.User?.emailaddress);
   late final _textpassword = TextEditingController();
@@ -100,7 +102,9 @@ class _viewProfileState extends State<viewProfile> {
                             shape: BoxShape.circle,
                             border: Border.all(color: Colors.white, width: 5),
                             image: DecorationImage(
-                                image: AssetImage("assets/profile.jpg"),
+                                image: user.User?.accountType == "citizen"
+                                    ? const AssetImage("assets/profile.jpg")
+                                    : const AssetImage("assets/worker.png"),
                                 fit: BoxFit.cover)),
                       ),
                       Text(
@@ -196,35 +200,36 @@ class _viewProfileState extends State<viewProfile> {
                   SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: TextFormField(
-                          enableInteractiveSelection: false,
-                          validator: (value) {
-                            setState(() {
-                              if (value!.isEmpty) {
-                                _validEmail = true;
-                              }
-                            });
-                            return null;
-                          },
-                          controller: _textEmail,
-                          keyboardType: TextInputType.emailAddress,
-                          readOnly: true,
-                          decoration: ThemeHelper().textInputDecoration(
-                              valid: _validEmail,
-                              suffixIcon: const Icon(
-                                Icons.email,
-                                color: Color(0xFFC2A26A),
-                              ),
-                              lableText: "Enter your email address",
-                              hintText: "Example@example.com"),
-                          onChanged: (value) {
-                            setState(() {
-                              if (_textEmail.text.isEmpty) {
-                                _validEmail = true;
-                              } else if (_textEmail.text.isNotEmpty) {
-                                _validEmail = false;
-                              } else {}
-                            });
-                          })),
+                        enableInteractiveSelection: false,
+                        controller: _textEmail,
+                        readOnly: true,
+                        decoration: ThemeHelper().textInputDecoration(
+                          valid: _validEmail,
+                          suffixIcon: const Icon(
+                            Icons.email,
+                            color: Color(0xFFC2A26A),
+                          ),
+                          lableText: "Your email address",
+                        ),
+                      )),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: TextFormField(
+                        enableInteractiveSelection: false,
+                        controller: _textType,
+                        readOnly: true,
+                        decoration: ThemeHelper().textInputDecoration(
+                          valid: _validType,
+                          suffixIcon: const Icon(
+                            Icons.account_circle,
+                            color: Color(0xFFC2A26A),
+                          ),
+                          lableText: "Your Account Type",
+                        ),
+                      )),
                   const SizedBox(
                     height: 20,
                   ),

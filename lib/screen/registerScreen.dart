@@ -449,7 +449,7 @@ class _registerState extends State<register> {
                                       Icon(
                                         Icons.add_circle_rounded,
                                         size: 30,
-                                        color: Colors.black26,
+                                        color: Colors.white,
                                       ),
                                     ]),
                               )
@@ -731,6 +731,10 @@ class _registerState extends State<register> {
                                   imageBackEx,
                                   imageBack,
                                   imageFront);
+
+                              if (user.User?.msg == "emailExist") {
+                                showSnackBar(context);
+                              }
                             });
                           }
                         }
@@ -756,5 +760,33 @@ class _registerState extends State<register> {
         ),
       )),
     );
+  }
+
+  void showSnackBar(BuildContext context) {
+    final snackbar = SnackBar(
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: const [
+          Icon(
+            Icons.error_outline,
+            color: Colors.white,
+          ),
+          Expanded(
+            child: Text(
+              '  The email has already registred',
+            ),
+          ),
+        ],
+      ),
+      backgroundColor: Colors.redAccent,
+      duration: const Duration(seconds: 1),
+      shape: const StadiumBorder(),
+      margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 60),
+      behavior: SnackBarBehavior.floating,
+      elevation: 0,
+    );
+
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 }

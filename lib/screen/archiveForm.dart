@@ -156,7 +156,7 @@ class _archiveFormState extends State<archiveForm> {
                                                                 .orangeAccent
                                                             : form[index]
                                                                         ?.status ==
-                                                                    "Approved"
+                                                                    "approved"
                                                                 ? Colors
                                                                     .greenAccent
                                                                 : Colors.grey,

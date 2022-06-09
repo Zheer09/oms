@@ -1,4 +1,6 @@
 // ignore: file_names
+import 'account.dart';
+
 class complaintForm {
   int? _userID;
   int? _formID;
@@ -8,6 +10,7 @@ class complaintForm {
   String? _location;
   String? _issueDecription;
   List<dynamic>? _formImages;
+  account? _user;
   String? _status;
 
   String? _msg;
@@ -20,6 +23,7 @@ class complaintForm {
     String? issueType,
     String? issueDecription,
     List<String>? formImages,
+    account? user,
     String? status,
     String? location,
   }) {
@@ -50,6 +54,9 @@ class complaintForm {
     if (status != null) {
       _status = status;
     }
+    if (user != null) {
+      _user = user;
+    }
   }
 
   get userID => _userID;
@@ -60,6 +67,9 @@ class complaintForm {
 
   get formID => _formID;
   set formID(value) => _formID = formID;
+
+  get user => _user;
+  set user(value) => _user = user;
 
   get msg => _msg;
   set msg(value) => _msg = msg;
@@ -84,6 +94,18 @@ class complaintForm {
 
   complaintForm.fromJson(Map<String, dynamic> json) {
     _userID = json['userID'];
+    _formID = json['formId'];
+    _fromTitle = json['title'];
+    _department = json['department'];
+    _issueType = json['issueType'];
+    _status = json['status'];
+    _location = json['location'];
+    _issueDecription = json['issueDecription'];
+    _formImages = json['formImages'].cast<String>();
+  }
+
+  complaintForm.fromJsonMT(Map<String, dynamic> json) {
+    _user = account.fromJsonMT(json['account']);
     _formID = json['formId'];
     _fromTitle = json['title'];
     _department = json['department'];
