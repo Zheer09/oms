@@ -74,7 +74,8 @@ class _viewStatusState extends State<viewStatus> {
                           child: ListView.builder(
                             itemCount: form.length,
                             itemBuilder: (context, index) =>
-                                form[index]?.status != "Done"
+                                form[index]?.status != "Done" ||
+                                        form[index]?.status != "Cancled"
                                     ? Column(children: [
                                         Padding(
                                           padding: const EdgeInsets.symmetric(
@@ -257,7 +258,9 @@ class _viewStatusState extends State<viewStatus> {
                                                                           ? Colors.orangeAccent
                                                                           : form[index]?.status == "approved"
                                                                               ? Colors.greenAccent
-                                                                              : Colors.grey,
+                                                                              : form[index]?.status == "Cancled"
+                                                                                  ? Colors.redAccent
+                                                                                  : Colors.grey,
                                                                       fontWeight: FontWeight.w500),
                                                                 )
                                                               ],

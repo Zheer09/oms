@@ -1,9 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dropdown_button2/custom_dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../model/accountProvider.dart';
 import '../model/complaintForm.dart';
+import '../service/userAcc_service.dart';
 
 class viewFormMT extends StatefulWidget {
   viewFormMT({Key? key, this.forms}) : super(key: key);
@@ -30,13 +32,13 @@ class _viewFormState extends State<viewFormMT> {
   late final _textDescription =
       TextEditingController(text: widget.forms?.issueDecription);
 
-  var items = [
-    'Item 1',
-    'Item 2',
-    'Item 3',
-    'Item 4',
-    'Item 5',
+  final List<String> itemsStatus = [
+    'In Progress',
+    'Finishing',
+    'Done',
+    'Cancled',
   ];
+  String? selectedValue;
 
   @override
   void dispose() {
@@ -177,30 +179,48 @@ class _viewFormState extends State<viewFormMT> {
                       const SizedBox(
                         height: 20,
                       ),
-                      Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Container(
-                            width: 80,
-                            height: 40,
-                            decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.3),
-                                    spreadRadius: 5,
-                                    blurRadius: 15,
-                                    offset: Offset(
-                                        0, 3), // changes position of shadow
-                                  ),
-                                ],
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Center(
-                                child: Text(
-                              widget.forms?.status,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 15),
-                            )),
-                          )),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Container(
+                                  width: 80,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.3),
+                                          spreadRadius: 5,
+                                          blurRadius: 15,
+                                          offset: Offset(0,
+                                              3), // changes position of shadow
+                                        ),
+                                      ],
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(15)),
+                                  child: Center(
+                                      child: Text(
+                                    widget.forms?.status,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15),
+                                  )),
+                                )),
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: CustomDropdownButton2(
+                                hint: 'Select Item',
+                                dropdownItems: itemsStatus,
+                                value: selectedValue,
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedValue = value;
+                                  });
+                                },
+                              ),
+                            ),
+                          ]),
                       const SizedBox(
                         height: 20,
                       ),
@@ -214,7 +234,19 @@ class _viewFormState extends State<viewFormMT> {
                                   borderRadius: BorderRadius.circular(30)),
                               primary: const Color(0xFFC2A26A),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              setState(() {
+                                isLoading = true;
+                              });
+                              updateForm(
+                                  title: widget.forms?.fromTitle,
+                                  department: widget.forms?.department,
+                                  description: widget.forms?.issueDecription,
+                                  location: widget.forms?.location,
+                                  status: selectedValue,
+                                  type: widget.forms?.issueType,
+                                  userID: widget.forms?.user.id);
+                            },
                             child: isLoading == true
                                 ? const SizedBox(
                                     height: 20,
@@ -238,5 +270,30 @@ class _viewFormState extends State<viewFormMT> {
             )),
       )),
     );
+  }
+
+  Future<void> updateForm(
+      {title,
+      department,
+      type,
+      location,
+      description,
+      status,
+      int? userID}) async {
+    complaintForm send = complaintForm(
+        formID: widget.forms?.formID,
+        fromTitle: title,
+        department: department,
+        issueType: type,
+        location: location,
+        issueDecription: description,
+        status: status);
+
+    complaintForm? res = await UserService.updateForm(
+        formID: widget.forms?.formID, userID: userID, body: send);
+
+    if (res != null) {
+      Navigator.of(context).pushNamed("/mainMT");
+    }
   }
 }

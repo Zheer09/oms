@@ -6,17 +6,17 @@ import '../model/complaintForm.dart';
 import '../model/uploadurl.dart';
 import '../service/userAcc_service.dart';
 
-class archiveForm extends StatefulWidget {
-  const archiveForm({Key? key}) : super(key: key);
+class archiveFormMT extends StatefulWidget {
+  const archiveFormMT({Key? key}) : super(key: key);
 
   static Route route() =>
-      MaterialPageRoute(builder: (context) => archiveForm());
+      MaterialPageRoute(builder: (context) => archiveFormMT());
 
   @override
-  State<archiveForm> createState() => _archiveFormState();
+  State<archiveFormMT> createState() => _archiveFormState();
 }
 
-class _archiveFormState extends State<archiveForm> {
+class _archiveFormState extends State<archiveFormMT> {
   complaintForm? deleted;
   List<complaintForm>? forms;
   UploadFile? images;
@@ -26,7 +26,7 @@ class _archiveFormState extends State<archiveForm> {
     var user = Provider.of<accountPro>(context);
 
     Future<List<complaintForm>?> getform() async {
-      forms = await UserService.getForms(userID: user.User?.id);
+      forms = await UserService.allGetForms();
 
       return forms;
     }

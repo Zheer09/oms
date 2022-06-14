@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:oms/screen/archiveFormMT.dart';
 
 import 'package:oms/screen/dashboardScreen.dart';
 import 'package:oms/screen/loginscreen.dart';
@@ -32,6 +33,8 @@ Route<dynamic>? createRoute(settings) {
       return viewStatusMT.route();
     case '/archiveFormCT':
       return archiveForm.route();
+    case '/archiveFormMT':
+      return archiveFormMT.route();
     case '/viewFormCT':
       return viewProfile.route();
   }
