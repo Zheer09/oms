@@ -10,7 +10,8 @@ import 'package:http/http.dart' as http;
 
 class Rest {
   //? Change the baseUrl according to your PC's IP address. Remain the port as 3000
-  static const String _baseUrl = 'http://192.168.0.107:8080';
+  static const String _baseUrl =
+      'http://omsbackend-env-1.eba-h7v7nmn9.us-east-1.elasticbeanstalk.com';
 
   // Send a GET request to retrieve data from a REST server
   static Future get(String endpoint) async {
