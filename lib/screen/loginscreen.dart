@@ -40,7 +40,11 @@ class _loginscreenState extends State<loginscreen> {
   @override
   Widget build(BuildContext context) {
     // ignore: non_constant_identifier_names
-    var User = Provider.of<accountPro>(context);
+    var User;
+    setState(() {
+      User = Provider.of<accountPro>(context);
+    });
+
     return Scaffold(
         body: SafeArea(
       child: SingleChildScrollView(
@@ -55,9 +59,6 @@ class _loginscreenState extends State<loginscreen> {
                   "assets/krg-logo-300.png",
                   scale: 1.6,
                   alignment: Alignment.center,
-                ),
-                const SizedBox(
-                  height: 15,
                 ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.7,
@@ -80,7 +81,7 @@ class _loginscreenState extends State<loginscreen> {
               child: Form(
                 child: TextFormField(
                   //inputFormatters: [FilteringTextInputFormatter.deny()],
-                  keyboardType: TextInputType.name,
+                  keyboardType: TextInputType.emailAddress,
                   controller: _text,
                   decoration: InputDecoration(
                       errorText: _validate ? 'Value Can\'t Be Empty' : null,
@@ -166,18 +167,17 @@ class _loginscreenState extends State<loginscreen> {
                         borderRadius: BorderRadius.circular(30)),
                     primary: const Color(0xFFC2A26A),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
+                    await User.login(context, _text.text, _textpass.text);
                     setState(() {
                       // ignore: non_constant_identifier_names
-
-                      User.login(context, _text.text, _textpass.text);
-
-                      if (User.User?.msg == "invalidacc") {
-                        showSnackBar(context);
-                      }
                     });
+                    if (User.User?.msg == "invalidacc") {
+                      showSnackBar(context);
+                    }
+                    print(User.User?.msg);
                   },
-                  child: const Text("Login into your acount"));
+                  child: const Text("Login"));
             }),
             const SizedBox(
               height: 20,
@@ -194,7 +194,7 @@ class _loginscreenState extends State<loginscreen> {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => const register()));
                 },
-                child: const Text("Register an account")),
+                child: const Text("Register")),
             Container(
               color: Colors.amber,
               width: MediaQuery.of(context).size.width,
